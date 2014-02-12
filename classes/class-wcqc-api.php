@@ -1,155 +1,159 @@
 <?php
 
+if ( !class_exists( 'qinvoice' ) ) {
 
-class qinvoice{
+	class qinvoice{
 
-	protected $gateway = '';
-	private $username;
-	private $password;
+		protected $gateway = '';
+		private $username;
+		private $password;
 
-	public $companyname;
-	public $contactname;
-	public $email;
-	public $address;
-	public $city;
-	public $country;
-	public $delivery_address;
-    public $delivery_zipcode;
-    public $delivery_city;
-    public $delivery_country;
-    public $vatnumber;
-    public $copy;
-    public $remark;
-    public $paid;
-    public $date;
-    public $action;
-	public $saverelation = false;
-	
-	public $layout;
-	
-	private $tags = array();
-	private $items = array();
-	private $files = array();
-	private $recurring;
+		public $companyname;
+		public $contactname;
+		public $email;
+		public $address;
+		public $city;
+		public $country;
+		public $delivery_address;
+	    public $delivery_zipcode;
+	    public $delivery_city;
+	    public $delivery_country;
+	    public $vatnumber;
+	    public $copy;
+	    public $remark;
+	    public $paid;
+	    public $date;
+	    public $action;
+		public $saverelation = false;
+		public $calculation_method;
+		
+		public $layout;
+		
+		private $tags = array();
+		private $items = array();
+		private $files = array();
+		private $recurring;
 
-	function __construct($username, $password, $url){
-		$this->username = $username;
-		$this->password = $password;
-		if(substr($url, -1) != '/'){
-			$url .= '/';
+		function __construct($username, $password, $url){
+			$this->username = $username;
+			$this->password = $password;
+			if(substr($url, -1) != '/'){
+				$url .= '/';
+			}
+			$this->gateway = $url;
+			$this->recurring = 'none';
 		}
-		$this->gateway = $url;
-		$this->recurring = 'none';
-	}
 
-	public function addTag($tag){
-		$this->tags[] = $tag;
-	}
-
-	public function setRecurring($recurring){
-		$this->recurring = strtolower($recurring);
-	}
-
-	public function addItem($params){
-		$item['code'] = $params['code'];
-		$item['description'] = $params['description'];
-		$item['price'] = $params['price'];
-		$item['price_incl'] = $params['price_incl'];
-		$item['price_vat'] = $params['price_vat'];
-		$item['vatpercentage'] = $params['vatpercentage'];
-		$item['discount'] = $params['discount'];
-		$item['quantity'] = $params['quantity'];
-		$item['categories'] = $params['categories'];
-		$this->items[] = $item;
-	}
-	
-	public function addFile($name, $url){
-		$this->files[] = array('url' => $url, 'name' => $name);
-	}
-
-	public function sendRequest() {
-        $content = "<?xml version='1.0' encoding='UTF-8'?>";
-        $content .= $this->buildXML();
-
-        $headers = array("Content-type: application/atom+xml");
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->gateway);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
-        $data = curl_exec($ch);
-        //echo('res:'. $data);
-        if (curl_errno($ch)) {
-            print curl_error($ch);
-        } else {
-            curl_close($ch);
-        }
-
-        if($data == 1){
-        	return true;
-        }else{
-        	return false;
-        }
-        
-    }
-
-	private function buildXML(){
-		$string = '<request>
-						<login mode="newInvoice">
-							<username><![CDATA['.$this->username.']]></username>
-							<password><![CDATA['.$this->password.']]></password>
-						</login>
-						<invoice>
-							<companyname><![CDATA['. $this->companyname .']]></companyname>
-							<contactname><![CDATA['. $this->contactname .']]></contactname>
-							<email><![CDATA['. $this->email .']]></email>
-							<address><![CDATA['. $this->address .']]></address>
-							<zipcode><![CDATA['. $this->zipcode .']]></zipcode>
-							<city><![CDATA['. $this->city .']]></city>
-							<country><![CDATA['. $this->country .']]></country>
-							<vat><![CDATA['. $this->vatnumber .']]></vat>
-							<recurring><![CDATA['. $this->recurring .']]></recurring>
-							<remark><![CDATA['. $this->remark .']]></remark>
-							<layout><![CDATA['. $this->layout .']]></layout>
-							<copy><![CDATA['. $this->copy .']]></copy>
-							<date><![CDATA['. $this->date .']]></date>
-							<paid><![CDATA['. $this->paid .']]></paid>
-                            <action><![CDATA['. $this->action .']]></action>
-                            <saverelation><![CDATA['. $this->saverelation .']]></saverelation>
-							<tags>';
-		foreach($this->tags as $tag){
-			$string .= '<tag>'. $tag .'</tag>';
+		public function addTag($tag){
+			$this->tags[] = $tag;
 		}
-					
-		$string .= '</tags>
-					<items>';
-		foreach($this->items as $i){
 
-		    $string .= '<item>
-		    	<code><![CDATA['. $i['code'] .']]></code>
-		    	<quantity><![CDATA['. $i['quantity'] .']]></quantity>
-		        <description><![CDATA['. $i['description'] .']]></description>
-		        <price><![CDATA['. $i['price'] .']]></price>
-		        <price_incl><![CDATA['. round($i['price_incl']) .']]></price_incl>
-		        <price_vat><![CDATA['. ($i['price_vat']) .']]></price_vat>
-		        <vatpercentage><![CDATA['. $i['vatpercentage'] .']]></vatpercentage>
-		        <discount><![CDATA['. $i['discount'] .']]></discount>
-		        <categories><![CDATA['. $i['categories'] .']]></categories>
-		        
-		    </item>';
+		public function setRecurring($recurring){
+			$this->recurring = strtolower($recurring);
 		}
-					   
-		$string .= '</items>
-					<files>';
-		foreach($this->files as $f){
-			$string .= '<file url="'.$f['url'].'">'.$f['name'].'</file>';
+
+		public function addItem($params){
+			$item['code'] = $params['code'];
+			$item['description'] = $params['description'];
+			$item['price'] = $params['price'];
+			$item['price_incl'] = $params['price_incl'];
+			$item['price_vat'] = $params['price_vat'];
+			$item['vatpercentage'] = $params['vatpercentage'];
+			$item['discount'] = $params['discount'];
+			$item['quantity'] = $params['quantity'];
+			$item['categories'] = $params['categories'];
+			$this->items[] = $item;
 		}
-		$string .= '</files>
-				</invoice>
-			</request>';
-		return $string;
+		
+		public function addFile($name, $url){
+			$this->files[] = array('url' => $url, 'name' => $name);
+		}
+
+		public function sendRequest() {
+	        $content = "<?xml version='1.0' encoding='UTF-8'?>";
+	        $content .= $this->buildXML();
+
+	        $headers = array("Content-type: application/atom+xml");
+	        $ch = curl_init();
+	        curl_setopt($ch, CURLOPT_URL, $this->gateway);
+	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	        curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+	        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+	        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+	        curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+	        $data = curl_exec($ch);
+	        //echo('res:'. $data);
+	        if (curl_errno($ch)) {
+	            print curl_error($ch);
+	        } else {
+	            curl_close($ch);
+	        }
+
+	        if($data == 1){
+	        	return true;
+	        }else{
+	        	return false;
+	        }
+	        
+	    }
+
+		private function buildXML(){
+			$string = '<request>
+							<login mode="newInvoice">
+								<username><![CDATA['.$this->username.']]></username>
+								<password><![CDATA['.$this->password.']]></password>
+							</login>
+							<invoice>
+								<companyname><![CDATA['. $this->companyname .']]></companyname>
+								<contactname><![CDATA['. $this->contactname .']]></contactname>
+								<email><![CDATA['. $this->email .']]></email>
+								<address><![CDATA['. $this->address .']]></address>
+								<zipcode><![CDATA['. $this->zipcode .']]></zipcode>
+								<city><![CDATA['. $this->city .']]></city>
+								<country><![CDATA['. $this->country .']]></country>
+								<vat><![CDATA['. $this->vatnumber .']]></vat>
+								<recurring><![CDATA['. $this->recurring .']]></recurring>
+								<remark><![CDATA['. $this->remark .']]></remark>
+								<layout><![CDATA['. $this->layout .']]></layout>
+								<copy><![CDATA['. $this->copy .']]></copy>
+								<date><![CDATA['. $this->date .']]></date>
+								<paid><![CDATA['. $this->paid .']]></paid>
+	                            <action><![CDATA['. $this->action .']]></action>
+	                            <saverelation><![CDATA['. $this->saverelation .']]></saverelation>
+	                            <calculation_method><![CDATA['. $this->calculation_method .']]></calculation_method>
+								<tags>';
+			foreach($this->tags as $tag){
+				$string .= '<tag>'. $tag .'</tag>';
+			}
+						
+			$string .= '</tags>
+						<items>';
+			foreach($this->items as $i){
+
+			    $string .= '<item>
+			    	<code><![CDATA['. $i['code'] .']]></code>
+			    	<quantity><![CDATA['. $i['quantity'] .']]></quantity>
+			        <description><![CDATA['. $i['description'] .']]></description>
+			        <price><![CDATA['. $i['price'] .']]></price>
+			        <price_incl><![CDATA['. round($i['price_incl']) .']]></price_incl>
+			        <price_vat><![CDATA['. ($i['price_vat']) .']]></price_vat>
+			        <vatpercentage><![CDATA['. $i['vatpercentage'] .']]></vatpercentage>
+			        <discount><![CDATA['. $i['discount'] .']]></discount>
+			        <categories><![CDATA['. $i['categories'] .']]></categories>
+			        
+			    </item>';
+			}
+						   
+			$string .= '</items>
+						<files>';
+			foreach($this->files as $f){
+				$string .= '<file url="'.$f['url'].'">'.$f['name'].'</file>';
+			}
+			$string .= '</files>
+					</invoice>
+				</request>';
+			return $string;
+		}
 	}
 }
 /* USAGE EXAMPLE; you can copy this code and modify it 
@@ -218,7 +222,16 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 		 */
 		public function __construct() {					
 			global $woocommerce;
-			require_once(ABSPATH .'wp-content/plugins/woocommerce/classes/class-wc-order.php');
+
+			
+			if(file_exists(ABSPATH .'wp-content/plugins/woocommerce/includes/class-wc-order.php')){
+				require_once(ABSPATH .'wp-content/plugins/woocommerce/includes/class-wc-order.php');
+			}
+
+			if(file_exists(ABSPATH .'wp-content/plugins/woocommerce/classes/class-wc-order.php')){
+				require_once(ABSPATH .'wp-content/plugins/woocommerce/classes/class-wc-order.php');
+			}
+		
 			$this->order = new WC_Order();
 		}
 		
@@ -233,7 +246,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 		 * Load the admin hooks
 		 */
 		public function load_hooks() {
-			add_action( 'woocommerce_admin_order_actions_end', array( $this, 'add_listing_actions' ) );
+			add_action( 'woocommerce_admin_order_actions_end', array( $this, 'add_invoice_actions' ) );
 			add_action( 'wp_ajax_generate_invoice', array( $this, 'generate_invoice_ajax'));	
 		}
 
@@ -283,6 +296,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 			$invoice->saverelation = (int)get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'save_relation' );
 			$invoice->layout = (int)get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'layout_code' );
 			
+			$invoice->calculation_method = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'calculation_method' );
 
 			$invoice->vat = ''; 					// Self-explanatory
 			$remark = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_remark' );
@@ -589,14 +603,15 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 		/**
 		 * Add action to the orders listing
 		 */
-		public function add_listing_actions( $order ) {
-			$btnTxt = __('Generate invoice', 'woocommerce-qinvoice-connect');
+		public function add_invoice_actions( $order ) {
+			$btnTxt = __('Invoice', 'woocommerce-qinvoice-connect');
 
 			if(get_post_meta($order->id, '_invoiced', true) == true){
-				$btnTxt = __('Regenerate invoice', 'woocommerce-qinvoice-connect');
+				$btnTxt = __('Invoice', 'woocommerce-qinvoice-connect');
 			}
-			$html = '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_invoice&order_id=' . $order->id ), 'generate_invoice' ) .'" class="button tips print-preview-button" target="_blank" alt="'. $btnTxt .'" data-tip="'. esc_attr__( 'Generate Invoice', 'woocommerce-qinvoice-connect' ) .'">';
-			$html .= '<span>'. $btnTxt .'</span>';
+			$btnIcon = '<img src="'. ABSPATH .'/woocommerce/assets/images/icons/print.png">';
+			$html = '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_invoice&order_id=' . $order->id ), 'generate_invoice' ) .'" class="button tips" target="_blank" alt="'. $btnTxt .'">';
+			$html .= $btnTxt;
 			$html .= '</a>';
 			//$html .= '<img src="'. admin_url( 'images/wpspin_light.gif' ) .'" class="loading" alt="">';
 			echo $html;

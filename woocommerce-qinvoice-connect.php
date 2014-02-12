@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Q-invoice Connect
  * Plugin URI: www.q-invoice.com
  * Description: Print order invoices directly through q-invoice
- * Version: 1.2.18
+ * Version: 1.2.20
  * Author: q-invoice.com
  * License: GPLv3 or later
  * License URI: http://www.opensource.org/licenses/gpl-license.php
@@ -160,9 +160,12 @@ if ( !function_exists( 'is_woocommerce_activated' ) ) {
 		}
 	}
 }
+
+
+
 if ( !is_woocommerce_activated() ) { 
 	require_once(ABSPATH .'wp-content/plugins/woocommerce/woocommerce.php');
-	new Woocommerce();
+	$woocommerce = new Woocommerce();
 }
 
 add_action( 'woocommerce_order_status_completed',

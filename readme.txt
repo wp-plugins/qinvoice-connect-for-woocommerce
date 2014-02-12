@@ -3,8 +3,8 @@ Contributors: q-invoice
 Donate link: n/a
 Tags: billing, invoicing, woocommerce, packing, packingslip
 Requires at least: 3.0.1
-Tested up to: 3.7
-Stable tag: 1.2.18
+Tested up to: 3.8
+Stable tag: 1.2.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,14 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 2. This is the second screen shot
 
 == Changelog ==
+
+= 1.2.20 =
+* Fixed compatibility issue with WC 2.1.0+ (new file/folder structure)
+* Restored 'Generate invoice' button to orders for WP 3.8+
+
+= 1.2.19 =
+* Check if class exists before loading qinvoice class
+* Added calculation method selector (leading price incl/excl VAT)
 
 = 1.2.18 =
 * Added trailing slash to API url when missing 

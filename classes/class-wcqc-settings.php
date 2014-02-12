@@ -214,18 +214,17 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 
 					<tr>
 						<th>
-							<label for="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>invoice_copy"><?php _e( 'Language copy', 'woocommerce-qinvoice-connect' ); ?></label>
+							<label for="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>calculation_method"><?php _e( 'Preferred calculation method', 'woocommerce-qinvoice-connect' ); ?></label>
 						</th>
 						
 						<td>
-							<?php $selected = ( get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_copy' ) ); ?>
-							<select name="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>invoice_copy">
-								<option value="" <?php if($selected == ''){ echo 'SELECTED'; } ?>><?php _e('None','woocommerce-qinvoice-connect'); ?></option>
-								<option value="en_US" <?php if($selected == 'en_US'){ echo 'SELECTED'; } ?>><?php _e('English','woocommerce-qinvoice-connect'); ?></option>
-								<option value="de_DE" <?php if($selected == 'de_DE'){ echo 'SELECTED'; } ?>><?php _e('German','woocommerce-qinvoice-connect'); ?></option>
+							<?php $selected = ( get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'calculation_method' ) ); ?>
+							<select name="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>calculation_method">
+								<option value="excl" <?php if($selected == 'excl'){ echo 'SELECTED'; } ?>><?php _e('VAT Excluded','woocommerce-qinvoice-connect'); ?></option>
+								<option value="incl" <?php if($selected == 'incl'){ echo 'SELECTED'; } ?>><?php _e('VAT Included','woocommerce-qinvoice-connect'); ?></option>
 							</select>
 							<span class="description">
-								<?php _e( 'Send a copy in a second language', 'woocommerce-qinvoice-connect' ); ?>
+								<?php _e( 'Which price is leading for calculations?', 'woocommerce-qinvoice-connect' ); ?>
 							</span>
 						</td>
 					</tr>
