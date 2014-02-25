@@ -44,13 +44,13 @@ Dutch: http://www.q-invoice.nl/help/webshop/woocommerce-plugin-instellen/
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets 
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png` 
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+
 
 == Changelog ==
+
+= 1.2.21 =
+* Added 2nd address line to request for both billing as invoicing
+* Only send fixed tag if it contains a value (prevent ghost tags)
 
 = 1.2.20 =
 * Fixed compatibility issue with WC 2.1.0+ (new file/folder structure)

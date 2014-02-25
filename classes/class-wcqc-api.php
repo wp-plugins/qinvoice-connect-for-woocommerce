@@ -12,9 +12,11 @@ if ( !class_exists( 'qinvoice' ) ) {
 		public $contactname;
 		public $email;
 		public $address;
+		public $address2;
 		public $city;
 		public $country;
 		public $delivery_address;
+		public $delivery_address2;
 	    public $delivery_zipcode;
 	    public $delivery_city;
 	    public $delivery_country;
@@ -108,9 +110,15 @@ if ( !class_exists( 'qinvoice' ) ) {
 								<contactname><![CDATA['. $this->contactname .']]></contactname>
 								<email><![CDATA['. $this->email .']]></email>
 								<address><![CDATA['. $this->address .']]></address>
+								<address2><![CDATA['. $this->address2 .']]></address2>
 								<zipcode><![CDATA['. $this->zipcode .']]></zipcode>
 								<city><![CDATA['. $this->city .']]></city>
 								<country><![CDATA['. $this->country .']]></country>
+								<delivery_address><![CDATA['. $this->delivery_address .']]></delivery_address>
+								<delivery_address2><![CDATA['. $this->delivery_address2 .']]></delivery_address2>
+								<delivery_zipcode><![CDATA['. $this->delivery_zipcode .']]></delivery_zipcode>
+								<delivery_city><![CDATA['. $this->delivery_city .']]></delivery_city>
+								<delivery_country><![CDATA['. $this->delivery_country .']]></delivery_country>
 								<vat><![CDATA['. $this->vatnumber .']]></vat>
 								<recurring><![CDATA['. $this->recurring .']]></recurring>
 								<remark><![CDATA['. $this->remark .']]></remark>
@@ -282,11 +290,13 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 			$invoice->email = $this->order->billing_email;				// Your customers emailaddress (invoice will be sent here)
 			//$invoice->email = '';				// NO EMAIL
 			$invoice->address = $this->order->billing_address_1; 				// Self-explanatory
+			$invoice->address2 = $this->order->billing_address_2; 				// Self-explanatory
 			$invoice->zipcode = $this->order->billing_postcode; 				// Self-explanatory
 			$invoice->city = $this->order->billing_city; 					// Self-explanatory
 			$invoice->country = $this->order->billing_country; 				// 2 character country code: NL for Netherlands, DE for Germany etc
 			
 			$invoice->delivery_address = $this->order->shipping_address_1; 				// Self-explanatory
+			$invoice->delivery_address2 = $this->order->shipping_address_2; 				// Self-explanatory
 			$invoice->delivery_zipcode = $this->order->shipping_postcode; 				// Self-explanatory
 			$invoice->delivery_city = $this->order->shipping_city; 					// Self-explanatory
 			$invoice->delivery_country = $this->order->shipping_country; 				// 2 character country code: NL for Netherlands, DE for Germany etc
@@ -321,7 +331,9 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 
 			// OPTIONAL: Add tags
 			$invoice->addTag($order_id);
-			$invoice->addTag(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_tag' ));
+			if(strlen(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_tag' )) > 0){
+				$invoice->addTag(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_tag' ));
+			}
 
 			$products_total = 0;
 			foreach($this->get_order_items() as $item){ // Repeat this block for each product
