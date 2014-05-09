@@ -11,6 +11,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 		public $companyname;
 		public $contactname;
 		public $email;
+		public $phone;
 		public $address;
 		public $address2;
 		public $city;
@@ -104,11 +105,13 @@ if ( !class_exists( 'qinvoice' ) ) {
 							<login mode="newInvoice">
 								<username><![CDATA['.$this->username.']]></username>
 								<password><![CDATA['.$this->password.']]></password>
+								<identifier><![CDATA[woocommerce_1.2.25]]></identifier>
 							</login>
 							<invoice>
 								<companyname><![CDATA['. $this->companyname .']]></companyname>
 								<contactname><![CDATA['. $this->contactname .']]></contactname>
 								<email><![CDATA['. $this->email .']]></email>
+								<phone><![CDATA['. $this->phone .']]></phone>
 								<address><![CDATA['. $this->address .']]></address>
 								<address2><![CDATA['. $this->address2 .']]></address2>
 								<zipcode><![CDATA['. $this->zipcode .']]></zipcode>
@@ -288,6 +291,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 			$invoice->companyname = $this->order->billing_company; 		// Your customers company name
 			$invoice->contactname = $this->order->billing_first_name .' '. $this->order->billing_last_name; 		// Your customers contact name
 			$invoice->email = $this->order->billing_email;				// Your customers emailaddress (invoice will be sent here)
+			$invoice->phone = $this->order->billing_phone;
 			//$invoice->email = '';				// NO EMAIL
 			$invoice->address = $this->order->billing_address_1; 				// Self-explanatory
 			$invoice->address2 = $this->order->billing_address_2; 				// Self-explanatory
@@ -309,8 +313,14 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 			$invoice->calculation_method = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'calculation_method' );
 
 			$invoice->vat = ''; 					// Self-explanatory
+
+			$order_date = explode(" ",$this->order->order_date);
+
+
 			$remark = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_remark' );
 			$remark = str_replace('{order_id}', $order_id, $remark);
+			$remark = str_replace('{order_number}', $this->order->get_order_number(), $remark);
+			$remark = str_replace('{order_date}', $order_date[0], $remark);
 			$paid_date = get_post_meta($order_id,'_paid_date', true);
 
 			$paid = 0;
@@ -322,10 +332,14 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 				$paidremark = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'paid_remark' );
 				$remark .= ' '. str_replace('{method}', $method, $paidremark);
 			}
-			$order_date = explode(" ",$this->order->order_date);
+			
 			$invoice->paid = $paid;
 			$invoice->remark = $remark;
-			$invoice->date = $order_date[0];
+			if(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_tag' ) == 'invoice'){
+				$invoice->date = Date('Y-m-d');
+			}else{
+				$invoice->date = $order_date[0];
+			}
 
 			$invoice->copy = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_copy' );
 
@@ -380,14 +394,15 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 				$invoice->addItem($params);
 				$products_total += $price;
 			}
+
 			if($this->order->get_shipping() > 0){
 				$vatp = $this->order->get_shipping_tax() / $this->order->get_shipping();
 				$vatp = round($vatp*100) * 100;
 				$params = array(	'code' => '',
 									'description' => $this->order->get_shipping_method(),		// Item description
-									'price' => $this->order->get_shipping()*100,				// Item price, multiplied by 100: EUR 10 becomes 1000
-									'price_incl' => '',
-									'price_vat' => '',
+									'price_incl' => ($this->order->get_shipping() + $this->order->get_shipping_tax())*100,				// Item price, multiplied by 100: EUR 10 becomes 1000
+									'price' => $this->order->get_shipping()*100,
+									'price_vat' => $this->order->get_shipping_tax()*100,
 									'vatpercentage' => round($vatp),		// Item vat percentage, multiplied by 100: 19% becomes 1900 (without '%')
 									'discount' => 0,			// Discount percentage, also multiplied by 100 without '%'
 									'quantity' => 100,			// Item quantity, again multiplied by 100 (1.75 becomes 175, 1 becomes 100)
@@ -409,8 +424,9 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
                  }else{
                  	 $amount = $coupon->coupon_amount;
                  }
-                 if($coupon->apply_before_tax == 0){
+                 if($coupon->apply_before_tax == 'no'){
                  	$vatp = 0;
+                 	//$vatp = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'coupon_vat' );
                  }else{
                  	$vatp = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'coupon_vat' );
                  }
@@ -617,12 +633,14 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 		 */
 		public function add_invoice_actions( $order ) {
 			$btnTxt = __('Invoice', 'woocommerce-qinvoice-connect');
+			$is_invoiced = false;
 
 			if(get_post_meta($order->id, '_invoiced', true) == true){
 				$btnTxt = __('Invoice', 'woocommerce-qinvoice-connect');
+				$is_invoiced = true;
 			}
 			$btnIcon = '<img src="'. ABSPATH .'/woocommerce/assets/images/icons/print.png">';
-			$html = '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_invoice&order_id=' . $order->id ), 'generate_invoice' ) .'" class="button tips" target="_blank" alt="'. $btnTxt .'">';
+			$html = '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_invoice&order_id=' . $order->id ), 'generate_invoice' ) .'" class="button tips generate_invoice" data-is-invoiced="'. $is_invoiced .'" target="_blank" alt="'. $btnTxt .'">';
 			$html .= $btnTxt;
 			$html .= '</a>';
 			//$html .= '<img src="'. admin_url( 'images/wpspin_light.gif' ) .'" class="loading" alt="">';

@@ -4,7 +4,7 @@ Donate link: n/a
 Tags: billing, invoicing, woocommerce, packing, packingslip
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 1.2.20
+Stable tag: 1.2.23
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,7 +38,7 @@ Sure we do. Contact us at info@q-invoice.com or by phone: +31 70 220 62 33
 
 More information about the setup can be found here: 
 
-Dutch: http://www.q-invoice.nl/help/webshop/woocommerce-plugin-instellen/ 
+Dutch: http://help.q-invoice.nl/woocommerce-facturatie-plugin-instellen/
 
 - more languages will follow and this document will be updated accordingly -
 
@@ -47,6 +47,16 @@ Dutch: http://www.q-invoice.nl/help/webshop/woocommerce-plugin-instellen/
 
 
 == Changelog ==
+= 1.2.24 =
+* Added option to exclude certain payment methods
+* Added alert before generating invoice for already invoiced order
+
+= 1.2.23 =
+* Fixed bug @ apply_before_tax
+* Added phone field to request
+
+= 1.2.22 =
+* Added support for order number (over order id)
 
 = 1.2.21 =
 * Added 2nd address line to request for both billing as invoicing

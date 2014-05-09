@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Q-invoice Connect
  * Plugin URI: www.q-invoice.com
  * Description: Print order invoices directly through q-invoice
- * Version: 1.2.20
+ * Version: 1.2.25
  * Author: q-invoice.com
  * License: GPLv3 or later
  * License URI: http://www.opensource.org/licenses/gpl-license.php
@@ -48,6 +48,7 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect' ) ) {
 			$this->load_hooks();
 			//add_action( 'init', array( $this, 'load_hooks' ) );
 			add_action( 'admin_init', array( $this, 'load_admin_hooks' ) );
+
 		}
 	
 		/**
@@ -89,6 +90,12 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect' ) ) {
 			if ( $this->is_woocommerce_activated() ) {
 				add_filter( 'plugin_action_links_' . self::$plugin_basefile, array( $this, 'add_settings_link') );
 			}
+
+			if(is_admin()){
+		       // wp_enqueue_script('qinvoiceconnect_admin','/'. dirname( self::$plugin_basefile ) .'/js/qinvoiceconnect_admin.js', array('jquery'));
+		        wp_enqueue_script('qinvoiceconnect_admin', plugins_url('js/qinvoiceconnect_admin.js', __FILE__ ), array('jquery'));
+		    	
+		    }  
 		}
 		
 		/**
@@ -130,6 +137,10 @@ function qinvoice_woocommerce_payment_completed( $order_id ) {
 function qinvoice_woocommerce_payment_complete( $order_id ) {
     global $wcqc;
     if(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_trigger' ) == 'payment'){
+    	$payment_method = get_post_meta($order_id,'_payment_method', true);
+    	if($payment_method == get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'exclude_payment_method' )){
+    		return true;
+    	}
     	if(!is_object($wcqc)){
     		$wcqc = new WooCommerce_Qinvoice_Connect();
 			$wcqc->load();

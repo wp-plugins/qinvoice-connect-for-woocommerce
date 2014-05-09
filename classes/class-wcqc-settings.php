@@ -62,7 +62,8 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 		 */
 		public function create_settings_page() {
 			?>
-			<h3><?php _e( 'Q-invoice.com API settings', 'woocommerce-qinvoice-connect' ); ?></h3>
+			<h2><?php _e( 'Q-invoice.com API settings', 'woocommerce-qinvoice-connect' ); ?></h2>
+			<h3><?php _e('API userdata'); ?></h3>
 			<table class="form-table">
 				<tbody>
 					<tr>
@@ -99,6 +100,11 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 							</span>
 						</td>
 					</tr>
+					</tbody>
+			</table>
+			<h3><?php _e( 'Invoice settings', 'woocommerce-qinvoice-connect' ); ?></h3>
+			<table class="form-table">
+				<tbody>
 					<tr>
 						<th>
 							<label for="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>layout_code"><?php _e( 'Layout code', 'woocommerce-qinvoice-connect' ); ?></label>
@@ -117,7 +123,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 						<td>
 							<input type="text" name="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>invoice_remark" value="<?php echo wp_kses_stripslashes( get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_remark' ) ); ?>"/>
 							<span class="description">
-								<?php _e( 'eg. Your order: {order_id}', 'woocommerce-qinvoice-connect' ); ?>
+								<?php _e( 'eg. Your order: {order_id} (you can also use {order_number} or {order_date})', 'woocommerce-qinvoice-connect' ); ?>
 							</span>
 						</td>
 					</tr>
@@ -176,7 +182,11 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 							</span>
 						</td>
 					</tr>
-
+				</tbody>
+			</table>
+			<h3><?php _e( 'Advanced settings', 'woocommerce-qinvoice-connect' ); ?></h3>
+			<table class="form-table">
+				<tbody>
 					<tr>
 						<th>
 							<label for="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>save_relation"><?php _e( 'Save/update relation?', 'woocommerce-qinvoice-connect' ); ?></label>
@@ -228,6 +238,65 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 							</span>
 						</td>
 					</tr>
+
+					<tr>
+						<th>
+							<label for="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>invoice_date"><?php _e( 'Invoice date', 'woocommerce-qinvoice-connect' ); ?></label>
+						</th>
+						
+						<td>
+							<?php $selected = ( get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_date' ) ); ?>
+							<select name="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>invoice_date">
+								<option value="order" <?php if($selected == 'order'){ echo 'SELECTED'; } ?>><?php _e('Same as order date','woocommerce-qinvoice-connect'); ?></option>
+								<option value="invoice" <?php if($selected == 'invoice'){ echo 'SELECTED'; } ?>><?php _e('Use invoice request date','woocommerce-qinvoice-connect'); ?></option>
+							</select>
+							<span class="description">
+								<?php _e( 'Choose the leading date for your invoices', 'woocommerce-qinvoice-connect' ); ?>
+							</span>
+						</td>
+					</tr>
+
+					<tr>
+						<th>
+							<label for="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>exclude_payment_method"><?php _e( 'Exclude Payment method', 'woocommerce-qinvoice-connect' ); ?></label>
+						</th>
+						
+						<td>
+								<?php
+									//global $woocommerce;
+									//$WC = new WC_Payment_Gateways();
+									//$cart = WC()->cart;
+									//$gateways = WC()->payment_gateways->get_available_payment_gateways();
+
+									$available_gateways = get_option('woocommerce_gateway_order');
+									//print_r($available_gateways);
+
+									if ( $available_gateways ) {
+										?>
+											<select name="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>exclude_payment_method">
+											<option value="-1"><?php _e('Exclude none'); ?></option>
+										<?php
+
+										foreach ( $available_gateways as $gateway => $v ) {
+											?>
+
+											<option value="<?php echo $gateway; ?>" <?php  if(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'exclude_payment_method' ) == $gateway){ echo 'SELECTED'; } ?>><?php echo $gateway; ?></option>
+												
+											<?php
+										}
+										?>
+											</select>	
+										<?php
+									} else {
+
+										echo '<p>' . __( 'Sorry, it seems that there are no available payment methods for your location. Please contact us if you require assistance or wish to make alternate arrangements.', 'woocommerce' ) . '</p>';
+
+									}
+								?>	
+													
+						</td>
+					</tr>
+
 					
 					
 					<tr>
