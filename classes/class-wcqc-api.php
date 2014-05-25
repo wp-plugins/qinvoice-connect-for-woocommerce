@@ -105,7 +105,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 							<login mode="newInvoice">
 								<username><![CDATA['.$this->username.']]></username>
 								<password><![CDATA['.$this->password.']]></password>
-								<identifier><![CDATA[woocommerce_1.2.25]]></identifier>
+								<identifier><![CDATA[woocommerce_1.2.26]]></identifier>
 							</login>
 							<invoice>
 								<companyname><![CDATA['. $this->companyname .']]></companyname>
@@ -369,16 +369,27 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 					// overwrite tax
 					$vatp = 0;
 				}
-				//echo '<pre>';
-				//print_r($item['item']['item_meta']);
+
+		        // Show all of the custom fields  
 				$item_desc = '';
 				foreach($item['item']['item_meta'] as $key=>$val){
-					if(substr($key,0,1) != '_'){
-						$item_desc .= "\n". $key .' : '. $val[0];
+					if(substr($key,0,3) == 'pa_'){
+						if(function_exists('woocommerce_get_product_terms')){
+							$result = array_shift(woocommerce_get_product_terms($item['product_id'], $key, 'names'));
+						}elseif(function_exists('wc_get_product_terms')){
+							$result = array_shift(wc_get_product_terms($item['product_id'], $key, 'names'));
+						}else{
+							$result = $val[0];
+						}
+
+						$key = str_replace("pa_","",$key);
+						$item_desc .= "\n". ucfirst($key) .' : '. $result;
+						//$item_desc .= $result;
 					}
+
 				}
-				//echo '</pre>';
-				//die();
+
+			
 				$price = ($item['line_subtotal']/$item['quantity'])*100;
 				$params = array(	'code' => $item['sku'],
 									'description' => $item['name'] . $item_desc,		// Item description

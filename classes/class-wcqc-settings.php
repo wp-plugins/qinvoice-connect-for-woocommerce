@@ -211,13 +211,10 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 						
 						<td>
 							<?php $selected = ( get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'coupon_vat' ) ); ?>
-							<select name="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>coupon_vat">
-								<option value="0" <?php if($selected == '0'){ echo 'SELECTED'; } ?>><?php _e('0%','woocommerce-qinvoice-connect'); ?></option>
-								<option value="6" <?php if($selected == '6'){ echo 'SELECTED'; } ?>><?php _e('6%','woocommerce-qinvoice-connect'); ?></option>
-								<option value="21" <?php if($selected == '21'){ echo 'SELECTED'; } ?>><?php _e('21%','woocommerce-qinvoice-connect'); ?></option>
-							</select>
+							<input type="number" style="width:50px;" name="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>coupon_vat" value="<?php echo wp_kses_stripslashes( get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'coupon_vat' ) ); ?>"/>
+
 							<span class="description">
-								<?php _e( 'VAT over coupon discounts', 'woocommerce-qinvoice-connect' ); ?>
+								<?php _e( 'VAT over coupon discounts. E.g. 21', 'woocommerce-qinvoice-connect' ); ?>
 							</span>
 						</td>
 					</tr>
