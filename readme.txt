@@ -4,7 +4,7 @@ Donate link: n/a
 Tags: billing, invoicing, woocommerce, packing, packingslip
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 1.2.23
+Stable tag: 1.2.25
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,15 @@ Dutch: http://help.q-invoice.nl/woocommerce-facturatie-plugin-instellen/
 
 
 == Changelog ==
+
+= 1.2.26 =
+* Formatted variation key in product description
+* Changed coupon_vat to numeric input (was: select)
+* Added delivery date 
+
+= 1.2.25 =
+* Added order date to invoice remark field: {order_date}
+
 = 1.2.24 =
 * Added option to exclude certain payment methods
 * Added alert before generating invoice for already invoiced order
