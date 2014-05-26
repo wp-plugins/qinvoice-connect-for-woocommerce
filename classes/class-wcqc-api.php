@@ -105,7 +105,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 							<login mode="newInvoice">
 								<username><![CDATA['.$this->username.']]></username>
 								<password><![CDATA['.$this->password.']]></password>
-								<identifier><![CDATA[woocommerce_1.2.26]]></identifier>
+								<identifier><![CDATA[woocommerce_1.2.27]]></identifier>
 							</login>
 							<invoice>
 								<companyname><![CDATA['. $this->companyname .']]></companyname>
@@ -316,11 +316,15 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 
 			$order_date = explode(" ",$this->order->order_date);
 
+			$date_format = get_option( 'date_format' );
+
+			$date = new DateTime($order_date[0]);
+			
 
 			$remark = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_remark' );
 			$remark = str_replace('{order_id}', $order_id, $remark);
 			$remark = str_replace('{order_number}', $this->order->get_order_number(), $remark);
-			$remark = str_replace('{order_date}', $order_date[0], $remark);
+			$remark = str_replace('{order_date}', $date->format($date_format), $remark);
 			$paid_date = get_post_meta($order_id,'_paid_date', true);
 
 			$paid = 0;
@@ -335,11 +339,15 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 			
 			$invoice->paid = $paid;
 			$invoice->remark = $remark;
-			if(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_tag' ) == 'invoice'){
+			
+			if(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_date' ) == 'invoice'){
 				$invoice->date = Date('Y-m-d');
+				//echo  Date('Y-m-d');
 			}else{
 				$invoice->date = $order_date[0];
+				//echo $order_date[0];
 			}
+			
 
 			$invoice->copy = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_copy' );
 
@@ -392,7 +400,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 			
 				$price = ($item['line_subtotal']/$item['quantity'])*100;
 				$params = array(	'code' => $item['sku'],
-									'description' => $item['name'] . $item_desc,		// Item description
+									'description' => str_replace("&nbsp;","",$item['name'] . $item_desc),		// Item description
 									'price' => $price,			// Item price, multiplied by 100: EUR 10 becomes 1000
 									'price_incl' => (($item['line_subtotal'] + $item['line_subtotal_tax'])/$item['quantity'])*100,
 									'price_vat' => round(($item['line_tax']/$item['quantity'])*100),
