@@ -3,8 +3,8 @@ Contributors: q-invoice
 Donate link: n/a
 Tags: billing, invoicing, woocommerce, packing, packingslip
 Requires at least: 3.0.1
-Tested up to: 3.8
-Stable tag: 1.2.27
+Tested up to: 3.9
+Stable tag: 1.2.29
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,13 @@ Dutch: http://help.q-invoice.nl/woocommerce-facturatie-plugin-instellen/
 
 
 == Changelog ==
+
+= 1.2.29 =
+* Added default ledger account support for organizing revenue
+* Added product discount support
+
+= 1.2.28 =
+* Added payment method support for use in request
 
 = 1.2.27 =
 * Minor fixes and tweaks

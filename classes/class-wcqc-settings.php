@@ -255,6 +255,18 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 
 					<tr>
 						<th>
+							<label for="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>default_ledger_account"><?php _e( 'Default ledger account', 'woocommerce-qinvoice-connect' ); ?></label>
+						</th>
+						<td>
+							<input type="number" style="width:50px;"  name="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>default_ledger_account" value="<?php echo wp_kses_stripslashes( get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'default_ledger_account' ) ); ?>"/>
+							<span class="description">
+								<?php _e( 'The default ledger account for your revenue', 'woocommerce-qinvoice-connect' ); ?>
+							</span>
+						</td>
+					</tr>
+
+					<tr>
+						<th>
 							<label for="<?php echo WooCommerce_Qinvoice_Connect::$plugin_prefix; ?>exclude_payment_method"><?php _e( 'Exclude Payment method', 'woocommerce-qinvoice-connect' ); ?></label>
 						</th>
 						

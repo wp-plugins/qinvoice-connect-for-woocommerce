@@ -25,6 +25,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 	    public $copy;
 	    public $remark;
 	    public $paid;
+	    public $payment_method;
 	    public $date;
 	    public $action;
 		public $saverelation = false;
@@ -65,6 +66,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 			$item['discount'] = $params['discount'];
 			$item['quantity'] = $params['quantity'];
 			$item['categories'] = $params['categories'];
+			$item['ledgeraccount'] = $params['ledgeraccount'];
 			$this->items[] = $item;
 		}
 		
@@ -105,11 +107,11 @@ if ( !class_exists( 'qinvoice' ) ) {
 							<login mode="newInvoice">
 								<username><![CDATA['.$this->username.']]></username>
 								<password><![CDATA['.$this->password.']]></password>
-								<identifier><![CDATA[woocommerce_1.2.27]]></identifier>
+								<identifier><![CDATA[woocommerce_1.2.29]]></identifier>
 							</login>
 							<invoice>
-								<companyname><![CDATA['. $this->companyname .']]></companyname>
-								<contactname><![CDATA['. $this->contactname .']]></contactname>
+								<firstname><![CDATA['. $this->firstname .']]></firstname>
+								<lastname><![CDATA['. $this->lastname .']]></lastname>
 								<email><![CDATA['. $this->email .']]></email>
 								<phone><![CDATA['. $this->phone .']]></phone>
 								<address><![CDATA['. $this->address .']]></address>
@@ -128,7 +130,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 								<layout><![CDATA['. $this->layout .']]></layout>
 								<copy><![CDATA['. $this->copy .']]></copy>
 								<date><![CDATA['. $this->date .']]></date>
-								<paid><![CDATA['. $this->paid .']]></paid>
+								<paid method="'. $this->payment_method .'"><![CDATA['. $this->paid .']]></paid>
 	                            <action><![CDATA['. $this->action .']]></action>
 	                            <saverelation><![CDATA['. $this->saverelation .']]></saverelation>
 	                            <calculation_method><![CDATA['. $this->calculation_method .']]></calculation_method>
@@ -151,6 +153,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 			        <vatpercentage><![CDATA['. $i['vatpercentage'] .']]></vatpercentage>
 			        <discount><![CDATA['. $i['discount'] .']]></discount>
 			        <categories><![CDATA['. $i['categories'] .']]></categories>
+			        <ledgeraccount><![CDATA['. $i['ledgeraccount'] .']]></ledgeraccount>
 			        
 			    </item>';
 			}
@@ -228,6 +231,8 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 		public $template_type;
 		public $order_id;
 
+
+
 		/**
 		 * Constructor
 		 */
@@ -271,6 +276,8 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 		 */
 		public function generate_invoice(  $order_id, $output = true ) {
 
+			global $woocommerce;
+
 			//mail('casper@newday.sk','woocommerce','generate_invoice called');
 
 			// if(get_post_meta($order_id, '_invoiced', true) == true){
@@ -289,7 +296,10 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 			$invoice = new qinvoice(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'api_username' ) ,get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'api_password' ),get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'api_url' ) );
 
 			$invoice->companyname = $this->order->billing_company; 		// Your customers company name
-			$invoice->contactname = $this->order->billing_first_name .' '. $this->order->billing_last_name; 		// Your customers contact name
+			
+			
+			$invoice->firstname = $this->order->billing_first_name;
+			$invoice->lastname = $this->order->billing_last_name;
 			$invoice->email = $this->order->billing_email;				// Your customers emailaddress (invoice will be sent here)
 			$invoice->phone = $this->order->billing_phone;
 			//$invoice->email = '';				// NO EMAIL
@@ -337,6 +347,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 				$remark .= ' '. str_replace('{method}', $method, $paidremark);
 			}
 			
+			$invoice->payment_method = get_post_meta($order_id,'_payment_method_title', true);
 			$invoice->paid = $paid;
 			$invoice->remark = $remark;
 			
@@ -347,9 +358,6 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 				$invoice->date = $order_date[0];
 				//echo $order_date[0];
 			}
-			
-
-			$invoice->copy = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_copy' );
 
 			// OPTIONAL: Add tags
 			$invoice->addTag($order_id);
@@ -357,9 +365,20 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 				$invoice->addTag(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_tag' ));
 			}
 
+			$default_ledger = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix .'default_ledger_account' );
 			$products_total = 0;
 			foreach($this->get_order_items() as $item){ // Repeat this block for each product
 				
+				//die();
+
+				$_product = $item['item'];
+				// echo '<hr />Product:';
+				// echo '<pre>';
+				// print_r($_product);
+				// echo '</pre>';
+
+				
+
 				if($item['quantity'] == 0 || $item['quantity'] == ''){
 					// skip 
 					continue;
@@ -396,9 +415,11 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 					}
 
 				}
-
+				
+				
 			
 				$price = ($item['line_subtotal']/$item['quantity'])*100;
+				
 				$params = array(	'code' => $item['sku'],
 									'description' => str_replace("&nbsp;","",$item['name'] . $item_desc),		// Item description
 									'price' => $price,			// Item price, multiplied by 100: EUR 10 becomes 1000
@@ -407,20 +428,21 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 									'vatpercentage' => $vatp,		// Item vat percentage, multiplied by 100: 19% becomes 1900 (without '%')
 									'discount' => 0,			// Discount percentage, also multiplied by 100 without '%'
 									'quantity' => $item['quantity']*100,			// Item quantity, again multiplied by 100 (1.75 becomes 175, 1 becomes 100)
-									'categories' => $item['categories']			// Categories
+									'categories' => $item['categories'],			// Categories
+									'ledgeraccount' => ($item['ledgeraccount'] > 0) ? $item['ledgeraccount'] : $default_ledger			// Ledger account
 								);
 
 				$invoice->addItem($params);
 				$products_total += $price;
 			}
 
-			if($this->order->get_shipping() > 0){
-				$vatp = $this->order->get_shipping_tax() / $this->order->get_shipping();
+			if($this->order->get_total_shipping() > 0){
+				$vatp = $this->order->get_shipping_tax() / $this->order->get_total_shipping();
 				$vatp = round($vatp*100) * 100;
 				$params = array(	'code' => '',
 									'description' => $this->order->get_shipping_method(),		// Item description
-									'price_incl' => ($this->order->get_shipping() + $this->order->get_shipping_tax())*100,				// Item price, multiplied by 100: EUR 10 becomes 1000
-									'price' => $this->order->get_shipping()*100,
+									'price_incl' => ($this->order->get_total_shipping() + $this->order->get_shipping_tax())*100,				// Item price, multiplied by 100: EUR 10 becomes 1000
+									'price' => $this->order->get_total_shipping()*100,
 									'price_vat' => $this->order->get_shipping_tax()*100,
 									'vatpercentage' => round($vatp),		// Item vat percentage, multiplied by 100: 19% becomes 1900 (without '%')
 									'discount' => 0,			// Discount percentage, also multiplied by 100 without '%'
@@ -436,13 +458,78 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
 
 			//die();
 			foreach($this->order->get_used_coupons() as $code){
-				 $coupon = new WC_Coupon( $code );
+				$coupon = new WC_Coupon( $code );
+				$coupon_amount = $coupon->coupon_amount != null ? $coupon->coupon_amount : $coupon->amount;
+
+				//print_r($coupon);
+                switch($coupon->type){
+                	case 'percent':
+                		$amount = ($coupon_amount/100) * ($products_total/100);
+                	break;
+                	case 'fixed_cart':
+                		$amount = $coupon_amount;
+                	break;
+                	case 'percent_product':
+                		$total_amount_for_discount = 0;
+                		foreach($this->get_order_items() as $item){
+                			// $categories =wp_get_post_terms( $item['product_id'], 'product_cat' );
+                			// print_r($categories);
+                			// foreach($categories as $cat){
+                			// 	$excluded_categories[] = $cat->term_id;
+                			// }
+
+                			if(in_array($item['product_id'],$coupon->exclude_product_ids)){
+                				// product is excluded from discount
+                				continue;
+                			}
+                			if(count($coupon->product_ids) > 0 && !in_array($item['product_id'], $coupon->product_ids)){
+                				// array of ids exists and this product is not in there
+                				continue;
+                			}
+                			$count = 1;
+                			while($count <= $item['quantity']){
+                				if($count > $coupon->limit_usage_to_x_items){
+                					// exit when max has been exceeded
+                					break;
+                				}
+                				$total_amount_for_discount += ($item['line_total']/$item['quantity']);	
+                				$count++;
+                			}
+                			
+                		}
+                		$amount = $total_amount_for_discount * ($coupon_amount/100);
+                	
+                	break;
+                	case 'fixed_product':
+                		$total_amount_for_discount = 0;
+                		foreach($this->get_order_items() as $item){
+                			// $categories =wp_get_post_terms( $item['product_id'], 'product_cat' );
+                			// print_r($categories);
+                			if(in_array($item['product_id'],$coupon->exclude_product_ids)){
+                				// product is excluded from discount
+                				continue;
+                			}
+                			if(count($coupon->product_ids) > 0 && !in_array($item['product_id'], $coupon->product_ids)){
+                				// array of ids exists and this product is not in there
+                				continue;
+                			}
+                			
+                			$count = 1;
+                			while($count <= $item['quantity']){
+                				if($count > $coupon->limit_usage_to_x_items){
+                					// exit when max has been exceeded
+                					break;
+                				}
+                				$total_amount_for_discount += ($item['line_total']/$item['quantity']);	
+                				$count++;
+                			}
+                			
+                		}
+                		$amount = $total_amount_for_discount > $coupon_amount ? $coupon_amount : $total_amount_for_discount;
+                	break;
+
+                }
                 
-                 if($coupon->type == 'percent'){
-                 	$amount = ($coupon->coupon_amount/100) * ($products_total/100);
-                 }else{
-                 	 $amount = $coupon->coupon_amount;
-                 }
                  if($coupon->apply_before_tax == 'no'){
                  	$vatp = 0;
                  	//$vatp = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'coupon_vat' );
@@ -463,22 +550,6 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_API' ) ) {
                  $invoice->addItem($params);
 			}
 
-
-			// if($this->order->get_cart_discount() > 0){
-			// 	$vatp = $this->order->get_shipping_tax() / $this->order->get_shipping();
-			// 	$vatp = round($vatp*100) * 100;
-			// 	$params = array(	'description' => $this->order->get_shipping_method(),		// Item description
-			// 						'price' => $this->order->get_shipping()*100,				// Item price, multiplied by 100: EUR 10 becomes 1000
-			// 						'vatpercentage' => round($vatp),		// Item vat percentage, multiplied by 100: 19% becomes 1900 (without '%')
-			// 						'discount' => 0,			// Discount percentage, also multiplied by 100 without '%'
-			// 						'quantity' => 100,			// Item quantity, again multiplied by 100 (1.75 becomes 175, 1 becomes 100)
-			// 						'categories' => 'shipping'			// Categories
-			// 					);
-
-			// 	$invoice->addItem($params);
-			// }
-			//print_r($this->order->items());
-			//print_r($this->order->get_items( 'tax' ));
 			$result =  $invoice->sendRequest();
 			if($result == true){
 				add_post_meta($order_id, '_invoiced', true, true); 
