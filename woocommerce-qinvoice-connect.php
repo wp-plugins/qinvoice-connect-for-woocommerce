@@ -3,18 +3,13 @@
  * Plugin Name: WooCommerce Q-invoice Connect
  * Plugin URI: www.q-invoice.com
  * Description: Print order invoices directly through q-invoice
- * Version: 1.2.29
+ * Version: 2.0.2.
  * Author: q-invoice.com
  * License: GPLv3 or later
  * License URI: http://www.opensource.org/licenses/gpl-license.php
  * Text Domain: woocommerce-qinvoice-connect
  * Domain Path: /languages/
  */
-
-/**
- * Base class
- */
-
 
 if ( !class_exists( 'WooCommerce_Qinvoice_Connect' ) ) {
 
@@ -23,90 +18,67 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect' ) ) {
 		public static $plugin_prefix;
 		public static $plugin_url;
 		public static $plugin_path;
-		public static $plugin_basefile;
+		public static $plugin_basename;
 		
-		public $writepanel;
+		public $writepanels;
 		public $settings;
-		public $print;
+		public $export;
+
+		public static $version = '2.0.2';
 
 		/**
 		 * Constructor
 		 */
 		public function __construct() {
 			self::$plugin_prefix = 'wcqc_';
-			self::$plugin_basefile = plugin_basename(__FILE__);
-			self::$plugin_url = plugin_dir_url(self::$plugin_basefile);
+			self::$plugin_basename = plugin_basename(__FILE__);
+			self::$plugin_url = plugin_dir_url(self::$plugin_basename);
 			self::$plugin_path = trailingslashit(dirname(__FILE__));
-		}
-		
-		/**
-		 * Load the hooks
-		 */
-		public function load() {
-			// load the hooks
-			//add_action( 'plugins_loaded', array($this, 'load_localisation') );
-			$this->load_hooks();
-			//add_action( 'init', array( $this, 'load_hooks' ) );
-			add_action( 'admin_init', array( $this, 'load_admin_hooks' ) );
 
+			$this->general_settings = get_option('wcqc_general_settings');
+			
+			// load the localisation & classes
+			add_action( 'plugins_loaded', array( $this, 'translations' ) ); // or use init?
+			add_action( 'init', array( $this, 'load_classes' ) );
+
+			add_action( 'woocommerce_order_status_completed', array( &$this, 'qinvoice_woocommerce_payment_completed' ) ); // Add menu.
+			add_action( 'woocommerce_payment_complete', array( &$this, 'qinvoice_woocommerce_payment_complete' ) ); // Add menu.
+			add_action( 'woocommerce_checkout_order_processed', array( &$this, 'qinvoice_woocommerce_checkout_order_processed' ) ); // Add menu.
 		}
-	
+
+		/**
+		 * Load the translation / textdomain files
+		 */
+		public function translations() {
+			load_plugin_textdomain( 'wcqc', false, dirname( self::$plugin_basename ) . '/languages' );
+		}
+
 		/**
 		 * Load the main plugin classes and functions
 		 */
 		public function includes() {
-			//include_once( 'classes/class-wcqc-writepanel.php' );
-			include_once( 'classes/class-wcqc-settings.php' );
-			include_once( 'classes/class-wcqc-api.php' );
-			//include_once( 'classes/class-wcqc-print.php' );
+			include_once( 'includes/class-wcqc-settings.php' );
+			include_once( 'includes/class-wcqc-writepanels.php' );
+			include_once( 'includes/class-wcqc-export.php' );
 		}
+		
 
 		/**
-		 * Load the localisation 
+		 * Instantiate classes when woocommerce is activated
 		 */
-		public function load_localisation() {	
-			return true;
-			load_plugin_textdomain( 'woocommerce-qinvoice-connect', false, dirname( self::$plugin_basefile ) . '/../../languages/woocommerce-qinvoice-connect/' );
-			load_plugin_textdomain( 'woocommerce-qinvoice-connect', false, dirname( self::$plugin_basefile ) . '/languages' );
-		}
-
-		/**
-		 * Load the init hooks
-		 */
-		public function load_hooks() {	
-			//if ( $this->is_woocommerce_activated() ) {
+		public function load_classes() {
+			if ( $this->is_woocommerce_activated() ) {
 				$this->includes();
 				$this->settings = new WooCommerce_Qinvoice_Connect_Settings();
-				$this->settings->load();
-				$this->api = new WooCommerce_Qinvoice_Connect_API();
-				$this->api->load();
-			//}
-		}
-		
-		/**
-		 * Load the admin hooks
-		 */
-		public function load_admin_hooks() {
-			if ( $this->is_woocommerce_activated() ) {
-				add_filter( 'plugin_action_links_' . self::$plugin_basefile, array( $this, 'add_settings_link') );
+				$this->writepanels = new WooCommerce_Qinvoice_Connect_Writepanels();
+				$this->export = new WooCommerce_Qinvoice_Connect_Export();
+			} else {
+				// display notice instead
+				add_action( 'admin_notices', array ( $this, 'need_woocommerce' ) );
 			}
 
-			if(is_admin()){
-		       // wp_enqueue_script('qinvoiceconnect_admin','/'. dirname( self::$plugin_basefile ) .'/js/qinvoiceconnect_admin.js', array('jquery'));
-		        wp_enqueue_script('qinvoiceconnect_admin', plugins_url('js/qinvoiceconnect_admin.js', __FILE__ ), array('jquery'));
-		    	
-		    }  
 		}
-		
-		/**
-		 * Add settings link to plugin page
-		 */
-		public function add_settings_link( $links ) {
-			$settings = sprintf( '<a href="%s" title="%s">%s</a>' , admin_url( 'admin.php?page=woocommerce&tab=' . $this->settings->tab_name ) , __( 'Go to the settings page', 'woocommerce-qinvoice-connect' ) , __( 'Settings', 'woocommerce-qinvoice-connect' ) );
-			array_unshift( $links, $settings );
-			return $links;	
-		}
-		
+
 		/**
 		 * Check if woocommerce is activated
 		 */
@@ -120,84 +92,51 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect' ) ) {
 				return false;
 			}
 		}
-	}
-}
-
-function qinvoice_woocommerce_payment_completed( $order_id ) {
-    global $wcqc;
-    if(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_trigger' ) == 'completed'){
-    	if(!is_object($wcqc)){
-    		$wcqc = new WooCommerce_Qinvoice_Connect();
-			$wcqc->load();
-    	}
-    	$wcqc->api->generate_invoice($order_id, false);
-    }
-}
-
-function qinvoice_woocommerce_payment_complete( $order_id ) {
-    global $wcqc;
-    if(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_trigger' ) == 'payment'){
-    	$payment_method = get_post_meta($order_id,'_payment_method', true);
-    	if($payment_method == get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'exclude_payment_method' )){
-    		return true;
-    	}
-    	if(!is_object($wcqc)){
-    		$wcqc = new WooCommerce_Qinvoice_Connect();
-			$wcqc->load();
-    	}
-    	$wcqc->api->generate_invoice($order_id, false);
-    	
-    }
-}
-function qinvoice_woocommerce_checkout_order_processed( $order_id ) {
-    global $wcqc;
-    if(get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'invoice_trigger' ) == 'order'){
-    	if(!is_object($wcqc)){
-    		$wcqc = new WooCommerce_Qinvoice_Connect();
-			$wcqc->load();
-    	}
-    	$wcqc->api->generate_invoice($order_id, false);
-    }
-}
-if ( !function_exists( 'is_woocommerce_activated' ) ) {
-	function is_woocommerce_activated() {
-		$blog_plugins = get_option( 'active_plugins', array() );
-		$site_plugins = get_site_option( 'active_sitewide_plugins', array() );
-
-		if ( in_array( 'woocommerce/woocommerce.php', $blog_plugins ) || isset( $site_plugins['woocommerce/woocommerce.php'] ) ) {
-			return true;
-		} else {
-			return false;
+		
+		/**
+		 * WooCommerce not active notice.
+		 *
+		 * @return string Fallack notice.
+		 */
+		 
+		public function need_woocommerce() {
+			$error = sprintf( __( 'WooCommerce Qinvoice Connect requires %sWooCommerce%s to be installed & activated!' , 'wcqc' ), '<a href="http://wordpress.org/extend/plugins/woocommerce/">', '</a>' );
+			
+			$message = '<div class="error"><p>' . $error . '</p></div>';
+		
+			echo $message;
 		}
-	}
+
+		function qinvoice_woocommerce_payment_completed( $order_id ) {
+		    if($this->general_settings['invoice_trigger'] == 'completed'){
+		    	$this->export->process_request('invoice',array($order_id), false);
+		    }
+		}
+
+		function qinvoice_woocommerce_payment_complete( $order_id ) {
+		    if($this->general_settings['invoice_trigger'] == 'payment'){
+		    	$payment_method = get_post_meta($order_id,'_payment_method', true);
+		    	if(in_array($payment_method,$this->general_settings['exclude_payment_method'])){
+		    		return true;
+		    	}
+		    	$this->export->process_request('invoice',array($order_id), false);
+		    	
+		    }
+		}
+		function qinvoice_woocommerce_checkout_order_processed( $order_id ) {
+		    if($this->general_settings['invoice_trigger'] == 'order'){
+		    	$this->export->process_request('invoice',array($order_id), false);
+		    }
+		}
+	}		
 }
 
-
-
-if ( !is_woocommerce_activated() ) { 
-	require_once(ABSPATH .'wp-content/plugins/woocommerce/woocommerce.php');
-	$woocommerce = new Woocommerce();
-}
-
-add_action( 'woocommerce_order_status_completed',
-        'qinvoice_woocommerce_payment_completed' );
-
-add_action( 'woocommerce_payment_complete',
-        'qinvoice_woocommerce_payment_complete' );
-
-add_action( 'woocommerce_checkout_order_processed', 
-	'qinvoice_woocommerce_checkout_order_processed' );
-
-//add_action( 'woocommerce_order_status_completed', 
-//	'qinvoice_woocommerce_order_status_complete' );
-
-
-//woocommerce_after_checkout_validation
-/**
- * Instance of plugin
- */
+// Load main plugin class
 $wcqc = new WooCommerce_Qinvoice_Connect();
-$wcqc->load();
 
 
-?>
+
+
+
+
+
