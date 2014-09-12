@@ -15,7 +15,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 		 */
 		public function __construct() {					
 			global $woocommerce;
-			$this->order = new WC_Order();
+			//$this->order = new WC_Order();
 			$this->general_settings = get_option('wcqc_general_settings');
 			add_action( 'wp_ajax_generate_wcqc', array($this, 'process_request_ajax' ));
 		}
