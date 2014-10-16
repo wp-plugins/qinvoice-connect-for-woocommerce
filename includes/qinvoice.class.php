@@ -118,6 +118,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 								<identifier><![CDATA['. $this->identifier .']]></identifier>
 							</login>
 							<'. $this->documenttype .'>
+								<companyname><![CDATA['. $this->companyname .']]></companyname>
 								<firstname><![CDATA['. $this->firstname .']]></firstname>
 								<lastname><![CDATA['. $this->lastname .']]></lastname>
 								<email><![CDATA['. $this->email .']]></email>

@@ -14,7 +14,7 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 			add_action( 'woocommerce_admin_order_actions_end', array( $this, 'add_listing_actions' ) );
 			add_action( 'add_meta_boxes_shop_order', array( $this, 'add_meta_box' ) );
 			add_action( 'admin_print_scripts', array( $this, 'add_scripts' ) );
-			//add_action( 'admin_footer-edit.php', array(&$this, 'bulk_actions') );
+			add_action( 'admin_footer-edit.php', array(&$this, 'bulk_actions') );
 			$this->general_settings = get_option('wcqc_general_settings');
 		}
 		

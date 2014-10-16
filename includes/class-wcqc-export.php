@@ -30,8 +30,10 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 			}
 			
 			try{
-				$this->order = new WC_Order( $order_id );
 				
+				$this->order = new WC_Order( $order_id );
+				print_r($this->order);
+				die();
 				$invoice = new qinvoice($this->general_settings['api_username'] ,$this->general_settings['api_password'],$this->general_settings['api_url']);
 				$invoice->identifier =  'wcqc_'. WooCommerce_Qinvoice_Connect::$version;
 				$invoice->setDocumentType($request_type);
@@ -49,6 +51,8 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 				$invoice->city = $this->order->billing_city; 					// Self-explanatory
 				$invoice->country = $this->order->billing_country; 				// 2 character country code: NL for Netherlands, DE for Germany etc
 				
+				$invoice->vatnumber = get_post_meta( $order_id, 'VAT Number', true );
+
 				$invoice->delivery_firstname = $this->order->shipping_first_name;
 				$invoice->delivery_lastname = $this->order->shipping_last_name; 
 				$invoice->delivery_address = $this->order->shipping_address_1; 
@@ -95,12 +99,10 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 				$invoice->paid = $paid;
 				$invoice->remark = $remark;
 				
-				if($this->general_settings['invoice_date']){
-					$invoice->date = Date('Y-m-d');
-					//echo  Date('Y-m-d');
-				}else{
+				if($this->general_settings['invoice_date'] == 'order'){
 					$invoice->date = $order_date[0];
-					//echo $order_date[0];
+				}else{
+					$invoice->date = Date('Y-m-d');
 				}
 
 				// OPTIONAL: Add tags
@@ -147,6 +149,9 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 
 			        // Show all of the custom fields  
 					$item_desc = '';
+					// echo '<pre>';
+					// print_r($item['item']['item_meta']);
+					// echo '</pre>';
 					foreach($item['item']['item_meta'] as $key=>$val){
 						if(substr($key,0,3) == 'pa_'){
 							if(function_exists('woocommerce_get_product_terms')){
@@ -161,8 +166,8 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 							$item_desc .= "\n". ucfirst($key) .' : '. $result;
 							//$item_desc .= $result;
 						}
-
 					}
+					
 					
 					
 				
@@ -252,14 +257,13 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 			$description = '';
 			foreach($this->order->get_used_coupons() as $code){
 
-                
-                 if($coupon->apply_before_tax == 'no'){
-                 	$vatp = 0;
-                 }else{
+                 if($coupon->apply_before_tax == 'yes'){
                  	$vatp = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'coupon_vat' );
+                 }else{
+                 	$vatp = 0;
                  }
                  $discount = true;
-                 $description += $code .' ';
+                 $description .= $code .' ';
 			}
 			if($discount == true){
 				$params = array( 	
@@ -289,6 +293,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 			$html = '';
 			foreach ($order_ids as $order_id) {
 				 $result = $this->send_request( $request_type, $order_id );
+				 sleep(1);
 				 $html .= 'Order '. $order_id .': ';
 				 if($result == true){
 					//add_post_meta($order_id, '_invoiced', true, true); 
@@ -296,9 +301,10 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 				}else{
 					$html .= __('Uhoh. Something went wrong.','wcqc');
 				}
-				if($output == true){
-					echo $html .'<hr /> <a href="javascript:window.close();">'. __('close this window.','wcqc') .'</a>';
-				}
+				$html .= '<br />';
+			}
+			if($output == true){
+				echo $html;	
 			}
 		}
 
@@ -330,6 +336,10 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 			// die($this->process_template( $request_type, $order_ids )); // or use the filter switch below!
 
 			$invoice = $this->process_request( $request_type, $order_ids, true );
+
+
+			echo '<hr /> <a href="javascript:window.close();">'. __('close this window.','wcqc') .'</a>';
+			
 			
 			exit;
 		}
