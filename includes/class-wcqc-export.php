@@ -32,8 +32,6 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 			try{
 				
 				$this->order = new WC_Order( $order_id );
-				print_r($this->order);
-				die();
 				$invoice = new qinvoice($this->general_settings['api_username'] ,$this->general_settings['api_password'],$this->general_settings['api_url']);
 				$invoice->identifier =  'wcqc_'. WooCommerce_Qinvoice_Connect::$version;
 				$invoice->setDocumentType($request_type);
