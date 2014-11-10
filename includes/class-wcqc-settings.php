@@ -169,6 +169,20 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 				)
 			);
 
+			add_settings_field(
+				'request_type',
+				__( 'Document type', 'wcqc' ),
+				array( &$this, 'select_element_callback' ),
+				$option,
+				'general_settings',
+				array(
+					'menu'			=> $option,
+					'id'			=> 'request_type',
+					'size'			=> '25',
+					'description'	=> __( 'Set the document type here', 'wcqc' ),
+					'options' 		=> array('invoice' => 'Invoice', 'quote' => 'Quote')
+				)
+			);
 
 			add_settings_field(
 				'layout_code',
@@ -186,7 +200,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 
 			add_settings_field(
 				'invoice_remark',
-				__( 'Invoice remark', 'wcqc' ),
+				__( 'Document remark', 'wcqc' ),
 				array( &$this, 'text_element_callback' ),
 				$option,
 				'general_settings',
@@ -214,7 +228,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 
 			add_settings_field(
 				'invoice_tag',
-				__( 'Invoice tag', 'wcqc' ),
+				__( 'Document tag', 'wcqc' ),
 				array( &$this, 'text_element_callback' ),
 				$option,
 				'general_settings',

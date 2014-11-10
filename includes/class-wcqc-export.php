@@ -60,6 +60,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 				$invoice->delivery_city = $this->order->shipping_city; 					// Self-explanatory
 				$invoice->delivery_country = $this->order->shipping_country; 				// 2 character country code: NL for Netherlands, DE for Germany etc
 				
+				$invoice->currency = get_woocommerce_currency();
 				$invoice->action = (int)$this->general_settings['invoice_action'];
 				$invoice->saverelation = (int)$this->general_settings['save_relation'];
 				$invoice->layout = (int)$this->general_settings['layout_code'];
@@ -151,22 +152,30 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 					// print_r($item['item']['item_meta']);
 					// echo '</pre>';
 					foreach($item['item']['item_meta'] as $key=>$val){
+						$result_array = false;
 						if(substr($key,0,3) == 'pa_'){
 							if(function_exists('woocommerce_get_product_terms')){
-								$result = array_shift(woocommerce_get_product_terms($item['product_id'], $key, 'names'));
+								$result_array = woocommerce_get_product_terms($item['product_id'], $key, 'names');
 							}elseif(function_exists('wc_get_product_terms')){
-								$result = array_shift(wc_get_product_terms($item['product_id'], $key, 'names'));
+								$result_array = wc_get_product_terms($item['product_id'], $key, 'names');
+							}
+
+							if(is_array($result_array)){
+								foreach($result_array as $res){
+									if(strtolower($res) == $val[0]){
+										$result = $res;
+										break;
+									}
+								}
 							}else{
 								$result = $val[0];
 							}
-
 							$key = str_replace("pa_","",$key);
 							$item_desc .= "\n". ucfirst($key) .' : '. $result;
-							//$item_desc .= $result;
 						}
 					}
-					
-					
+
+										
 					
 				
 					$price = ($item['line_subtotal']/$item['quantity'])*100;
@@ -187,6 +196,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 					$products_total += $price;
 				}
 
+				
 				
 
 				if(method_exists($this->order,'get_total_shipping')){
@@ -287,7 +297,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 		/**
 		 * Send request for each order_id
 		 */
-		public function process_request( $request_type, $order_ids, $output = false ) {
+		public function process_request( $request_type = 'invoice', $order_ids, $output = false ) {
 			$html = '';
 			foreach ($order_ids as $order_id) {
 				 $result = $this->send_request( $request_type, $order_id );
@@ -295,7 +305,11 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 				 $html .= 'Order '. $order_id .': ';
 				 if($result == true){
 					//add_post_meta($order_id, '_invoiced', true, true); 
-					$html .= __('Invoice generated.','wcqc');
+					if($request_type == 'invoice'){
+						$html .= __('Invoice generated.','wcqc');
+					}elseif($request_type == 'quote'){
+						$html .= __('Quote generated.','wcqc');
+					}
 				}else{
 					$html .= __('Uhoh. Something went wrong.','wcqc');
 				}

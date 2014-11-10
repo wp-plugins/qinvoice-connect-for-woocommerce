@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Q-invoice Connect
  * Plugin URI: www.q-invoice.com
  * Description: Print order invoices directly through q-invoice
- * Version: 2.0.5
+ * Version: 2.0.6
  * Author: q-invoice.com
  * License: GPLv3 or later
  * License URI: http://www.opensource.org/licenses/gpl-license.php
@@ -24,7 +24,7 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect' ) ) {
 		public $settings;
 		public $export;
 
-		public static $version = '2.0.5';
+		public static $version = '2.0.6';
 
 		/**
 		 * Constructor
@@ -109,7 +109,7 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect' ) ) {
 
 		function qinvoice_woocommerce_payment_completed( $order_id ) {
 		    if($this->general_settings['invoice_trigger'] == 'completed'){
-		    	$this->export->process_request('invoice',array($order_id), false);
+		    	$this->export->process_request($this->general_settings['request_type'],array($order_id), false);
 		    }
 		}
 
@@ -119,13 +119,13 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect' ) ) {
 		    	if(in_array($payment_method,$this->general_settings['exclude_payment_method'])){
 		    		return true;
 		    	}
-		    	$this->export->process_request('invoice',array($order_id), false);
+		    	$this->export->process_request($this->general_settings['request_type'],array($order_id), false);
 		    	
 		    }
 		}
 		function qinvoice_woocommerce_checkout_order_processed( $order_id ) {
 		    if($this->general_settings['invoice_trigger'] == 'order'){
-		    	$this->export->process_request('invoice',array($order_id), false);
+		    	$this->export->process_request($this->general_settings['request_type'],array($order_id), false);
 		    }
 		}
 	}		

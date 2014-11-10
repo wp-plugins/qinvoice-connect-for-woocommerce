@@ -30,6 +30,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 	    public $payment_method;
 	    public $date;
 	    public $action;
+	    public $currency;
 		public $saverelation = false;
 		public $calculation_method;
 		
@@ -140,6 +141,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 								<copy><![CDATA['. $this->copy .']]></copy>
 								<date><![CDATA['. $this->date .']]></date>
 								<paid method="'. $this->payment_method .'"><![CDATA['. $this->paid .']]></paid>
+	                            <currency><![CDATA['. $this->currency .']]></currency>
 	                            <action><![CDATA['. $this->action .']]></action>
 	                            <saverelation><![CDATA['. $this->saverelation .']]></saverelation>
 	                            <calculation_method><![CDATA['. $this->calculation_method .']]></calculation_method>
