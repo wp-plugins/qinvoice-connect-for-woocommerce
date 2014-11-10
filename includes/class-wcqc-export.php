@@ -161,11 +161,15 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 							}
 
 							if(is_array($result_array)){
+								$result = false;
 								foreach($result_array as $res){
 									if(strtolower($res) == $val[0]){
 										$result = $res;
 										break;
 									}
+								}
+								if($result == false){
+									$result = $val[0];
 								}
 							}else{
 								$result = $val[0];
