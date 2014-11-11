@@ -1,4 +1,9 @@
 <?php
+/**
+ * @copyright	Copyright (C) 2013-2014 q-invoice.com - All rights reserved.
+ * @license		http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
+ * @version 	2.0
+ */
 
 if ( !class_exists( 'qinvoice' ) ) {
 
@@ -33,6 +38,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 	    public $currency;
 		public $saverelation = false;
 		public $calculation_method;
+
 		
 		public $layout;
 		
@@ -49,6 +55,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 			}
 			$this->gateway = $url;
 			$this->recurring = 'none';
+			$this->setDocumentType('invoice');
 		}
 
 		

@@ -24,7 +24,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 		/**
 		 * Sends the actual request to the Q-invoice.com API
 		 */
-		public function send_request( $request_type, $order_id, $output = true )	{
+		public function send_request( $request_type = 'invoice', $order_id, $output = true )	{
 			if ( !class_exists('qinvoice') ) {
 				require_once( WooCommerce_Qinvoice_Connect::$plugin_path . "includes/qinvoice.class.php" );
 			}
@@ -163,7 +163,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 							if(is_array($result_array)){
 								$result = false;
 								foreach($result_array as $res){
-									if(strtolower($res) == $val[0]){
+									if(strtolower(str_replace(" ","-",$res)) == $val[0]){
 										$result = $res;
 										break;
 									}
@@ -212,7 +212,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 				if($total_shipping > 0){
 					$vatp = $this->order->get_shipping_tax() / $total_shipping;
 					$vatp = round($vatp*100) * 100;
-					$params = array(	'code' => '',
+					$params = array(	'code' => 'SHPMNT',
 										'description' => $this->order->get_shipping_method(),		// Item description
 										'price_incl' => ($total_shipping + $this->order->get_shipping_tax())*100,				// Item price, multiplied by 100: EUR 10 becomes 1000
 										'price' => $total_shipping*100,
@@ -247,7 +247,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 							$price_vat = $price_incl - $price;
 							
 							$params = array( 	
-								'code' => '',
+								'code' => 'CSTS',
 		     					'description' => $fee['name'],
 		     					'price' => $price,
 		     					'price_incl' => $price_incl,
@@ -279,7 +279,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 			}
 			if($discount == true){
 				$params = array( 	
-							'code' => '',
+							'code' => 'DSCNT',
          					'description' => $description,
          					'price' => $this->order->get_total_discount()*-100,
          					'price_incl' => '',
