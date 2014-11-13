@@ -64,6 +64,9 @@ if ( !class_exists( 'qinvoice' ) ) {
 		}
 
 		public function setDocumentType($type){
+			if(!in_array($type, array('invoice','quote'))){
+				$type = 'invoice';
+			}
 			$this->documenttype = $type;
 		}
 
@@ -119,9 +122,6 @@ if ( !class_exists( 'qinvoice' ) ) {
 	    }
 
 		private function buildXML(){
-			if(strlen($this->documenttype) < 1){
-				$this->documenttype = 'invoice';
-			}
 			$string = '<request>
 							<login mode="new'. ucfirst($this->documenttype).'">
 								<username><![CDATA['.$this->username.']]></username>
