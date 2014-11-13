@@ -64,6 +64,9 @@ if ( !class_exists( 'qinvoice' ) ) {
 		}
 
 		public function setDocumentType($type){
+			if(!in_array($type, array('invoice','quote'))){
+				$type = 'invoice';
+			}
 			$this->documenttype = $type;
 		}
 
