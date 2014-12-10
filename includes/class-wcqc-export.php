@@ -314,7 +314,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 		 * Send request for each order_id
 		 */
 		public function process_request( $request_type = 'invoice', $order_ids, $output = false ) {
-			$html = 'test';
+			$html = '';
 			foreach ($order_ids as $order_id) {
 				 $result = $this->send_request( $request_type, $order_id );
 				 //				 sleep(1);
@@ -325,6 +325,8 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 						$html .= __('Invoice generated.','wcqc');
 					}elseif($request_type == 'quote'){
 						$html .= __('Quote generated.','wcqc');
+					}elseif($request_type == 'order_confirmation'){
+						$html .= __('Order confirmation generated.','wcqc');
 					}
 				}else{
 					$html .= __('Uhoh. Something went wrong.','wcqc');
