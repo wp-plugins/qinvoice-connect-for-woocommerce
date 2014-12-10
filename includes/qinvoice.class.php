@@ -107,18 +107,18 @@ if ( !class_exists( 'qinvoice' ) ) {
 	        curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
 	        $data = curl_exec($ch);
 
-	        // if (curl_errno($ch)) {
-	        //     print curl_error($ch);
-	        // } else {
-	        //     curl_close($ch);
-	        // }
-	       	return $data;
+	        if (curl_errno($ch)) {
+	            print curl_error($ch);
+	        } else {
+	            curl_close($ch);
+	        }
+	       //	return $data;
 
-	        // if($data == 1){
-	        // 	return true;
-	        // }else{
-	        // 	return false;
-	        // }
+	        if($data == 1){
+	        	return true;
+	        }else{
+	        	return false;
+	        }
 	        
 	    }
 
