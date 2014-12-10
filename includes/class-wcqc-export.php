@@ -317,8 +317,6 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 			$html = 'test';
 			foreach ($order_ids as $order_id) {
 				 $result = $this->send_request( $request_type, $order_id );
-				 echo $result;
-				 echo 'hier';
 				 //				 sleep(1);
 				 $html .= 'Order '. $order_id .': ';
 				 if($result == true){

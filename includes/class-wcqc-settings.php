@@ -137,7 +137,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'api_url',
 					'size'			=> '72',
-					'description'	=> sprintf(__( 'eg. %s', 'wcqc' ),'https://app.q-invoice.com/api/xml/1.2/')
+					'description'	=> sprintf(__( 'eg. %s', 'wcqc' ),'https://app.q-invoice.com/api/xml/1.1/')
 				)
 			);
 
