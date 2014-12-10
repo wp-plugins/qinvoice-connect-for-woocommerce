@@ -58,6 +58,9 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=quote&order_ids=' . $order->id ), 'generate_wcqc' ); ?>" class="button tips wcqc" target="_blank" alt="<?php esc_attr_e( 'Quote', 'wcqc' ); ?>" data-tip="<?php esc_attr_e( 'Quote', 'wcqc' ); ?>">
 				<img src="<?php echo WooCommerce_Qinvoice_Connect::$plugin_url . 'images/quote.png'; ?>" alt="<?php esc_attr_e( 'Quote', 'wcqc' ); ?>" width="16">
 			</a>
+			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=order_confirmation&order_ids=' . $order->id ), 'generate_wcqc' ); ?>" class="button tips wcqc" target="_blank" alt="<?php esc_attr_e( 'Order confirmation', 'wcqc' ); ?>" data-tip="<?php esc_attr_e( 'Order confirmation', 'wcqc' ); ?>">
+				<img src="<?php echo WooCommerce_Qinvoice_Connect::$plugin_url . 'images/order_confirmation.png'; ?>" alt="<?php esc_attr_e( 'Order confirmation', 'wcqc' ); ?>" width="16">
+			</a>
 			<?php
 		}
 
@@ -77,6 +80,7 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 			$html = '<ul class="wcqc-actions" >
 						<li style="float:left;"><a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'New invoice', 'wcqc' ) .'">'. __( 'New invoice', 'wcqc' ) .'</a></li>
 						<li style="float:left;"><a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=quote&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'New quote', 'wcqc' ) .'">'. __( 'New quote', 'wcqc' ) .'</a></li>
+						<li style="float:left;"><a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=order_confirmation&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'New order confirmation', 'wcqc' ) .'">'. __( 'New order confirmation', 'wcqc' ) .'</a></li>
 					</ul>
 					<br style="clear:both;"/>';
 			echo $html;
@@ -91,12 +95,16 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 			if ( 'shop_order' == $post_type ) {
 				?>
 				<script type="text/javascript">
-				jQuery(document).ready(function() {
-					jQuery('<option>').val('invoice').text('<?php _e( 'Create invoices', 'wcqc' )?>').appendTo("select[name='action']");
-					jQuery('<option>').val('invoice').text('<?php _e( 'Create invoices', 'wcqc' )?>').appendTo("select[name='action2']");
-					jQuery('<option>').val('quote').text('<?php _e( 'Create quotes', 'wcqc' )?>').appendTo("select[name='action']");
-					jQuery('<option>').val('quote').text('<?php _e( 'Create quotes', 'wcqc' )?>').appendTo("select[name='action2']");
-				});
+					jQuery(document).ready(function() {
+						jQuery('<option>').val('invoice').text('<?php _e( 'Create invoices', 'wcqc' )?>').appendTo("select[name='action']");
+						jQuery('<option>').val('invoice').text('<?php _e( 'Create invoices', 'wcqc' )?>').appendTo("select[name='action2']");
+
+						jQuery('<option>').val('quote').text('<?php _e( 'Create quotes', 'wcqc' )?>').appendTo("select[name='action']");
+						jQuery('<option>').val('quote').text('<?php _e( 'Create quotes', 'wcqc' )?>').appendTo("select[name='action2']");
+
+						jQuery('<option>').val('order_confirmation').text('<?php _e( 'Create order confimations', 'wcqc' )?>').appendTo("select[name='action']");
+						jQuery('<option>').val('order_confirmation').text('<?php _e( 'Create order confimations', 'wcqc' )?>').appendTo("select[name='action2']");
+					});
 				</script>
 				<?php
 			}

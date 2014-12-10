@@ -137,7 +137,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'api_url',
 					'size'			=> '72',
-					'description'	=> sprintf(__( 'eg. %s', 'wcqc' ),'https://app.q-invoice.com/api/xml/1.1/')
+					'description'	=> sprintf(__( 'eg. %s', 'wcqc' ),'https://app.q-invoice.com/api/xml/1.2/')
 				)
 			);
 
@@ -180,7 +180,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'id'			=> 'request_type',
 					'size'			=> '25',
 					'description'	=> __( 'Set the document type here', 'wcqc' ),
-					'options' 		=> array('invoice' => 'Invoice', 'quote' => 'Quote')
+					'options' 		=> array('invoice' => 'Invoice', 'quote' => 'Quote',  'order_confirmation' => 'Order confirmation')
 				)
 			);
 
@@ -208,7 +208,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'invoice_remark',
 					'size'			=> '40',
-					'description'	=> __( 'eg. Your order: {order_id}. Your payment method: {method}. (you can also use {order_number} and {order_date})', 'wcqc' )
+					'description'	=> __( 'eg. Your order: {order_id}. Your payment method: {method}. (you can also use {order_number} and {order_date}). Use {customer_note} for the customer note', 'wcqc' )
 				)
 			);
 
@@ -395,7 +395,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 			global $wcqc;
 
 			$default_general = array(
-				'api_url'	=> 'https://app.q-invoice.com/api/xml/1.1/',
+				'api_url'	=> 'https://app.q-invoice.com/api/xml/1.2/',
 			);
 
 			update_option( 'wcqc_general_settings', $default_general );

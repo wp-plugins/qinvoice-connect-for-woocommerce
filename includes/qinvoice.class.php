@@ -2,7 +2,7 @@
 /**
  * @copyright	Copyright (C) 2013-2014 q-invoice.com - All rights reserved.
  * @license		http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
- * @version 	2.0
+ * @version 	2.1
  */
 
 if ( !class_exists( 'qinvoice' ) ) {
@@ -64,7 +64,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 		}
 
 		public function setDocumentType($type){
-			if(!in_array($type, array('invoice','quote'))){
+			if(!in_array($type, array('invoice','quote','order_confirmation'))){
 				$type = 'invoice';
 			}
 			$this->documenttype = $type;
@@ -106,18 +106,19 @@ if ( !class_exists( 'qinvoice' ) ) {
 	        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 	        curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
 	        $data = curl_exec($ch);
-	        //echo('res:'. $data);
-	        if (curl_errno($ch)) {
-	            print curl_error($ch);
-	        } else {
-	            curl_close($ch);
-	        }
 
-	        if($data == 1){
-	        	return true;
-	        }else{
-	        	return false;
-	        }
+	        // if (curl_errno($ch)) {
+	        //     print curl_error($ch);
+	        // } else {
+	        //     curl_close($ch);
+	        // }
+	       	return $data;
+
+	        // if($data == 1){
+	        // 	return true;
+	        // }else{
+	        // 	return false;
+	        // }
 	        
 	    }
 

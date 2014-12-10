@@ -25,6 +25,9 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 		 * Sends the actual request to the Q-invoice.com API
 		 */
 		public function send_request( $request_type = 'invoice', $order_id, $output = true )	{
+
+
+
 			if ( !class_exists('qinvoice') ) {
 				require_once( WooCommerce_Qinvoice_Connect::$plugin_path . "includes/qinvoice.class.php" );
 			}
@@ -32,44 +35,50 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 			try{
 				
 				$this->order = new WC_Order( $order_id );
-				$invoice = new qinvoice($this->general_settings['api_username'] ,$this->general_settings['api_password'],$this->general_settings['api_url']);
-				$invoice->identifier =  'wcqc_'. WooCommerce_Qinvoice_Connect::$version;
-				$invoice->setDocumentType($request_type);
+				$document = new qinvoice($this->general_settings['api_username'] ,$this->general_settings['api_password'],$this->general_settings['api_url']);
+				$document->identifier =  'wcqc_'. WooCommerce_Qinvoice_Connect::$version;
+				$document->setDocumentType($request_type);
 
-				
-				$invoice->companyname = $this->order->billing_company; 		// Your customers company name
+				// customer note
+				$page_data = get_page( $order_id );
+				$excerpt = strip_tags($page_data->post_excerpt);
 
-				$invoice->firstname = $this->order->billing_first_name;
-				$invoice->lastname = $this->order->billing_last_name;
-				$invoice->email = $this->order->billing_email;				// Your customers emailaddress (invoice will be sent here)
-				$invoice->phone = $this->order->billing_phone;
-				$invoice->address = $this->order->billing_address_1; 				// Self-explanatory
-				$invoice->address2 = $this->order->billing_address_2; 				// Self-explanatory
-				$invoice->zipcode = $this->order->billing_postcode; 				// Self-explanatory
-				$invoice->city = $this->order->billing_city; 					// Self-explanatory
-				$invoice->country = $this->order->billing_country; 				// 2 character country code: NL for Netherlands, DE for Germany etc
-				
-				$invoice->vatnumber = get_post_meta( $order_id, 'VAT Number', true );
-
-				$invoice->delivery_firstname = $this->order->shipping_first_name;
-				$invoice->delivery_lastname = $this->order->shipping_last_name; 
-				$invoice->delivery_address = $this->order->shipping_address_1; 
-				$invoice->delivery_address = $this->order->shipping_address_1; 				// Self-explanatory
-				$invoice->delivery_address2 = $this->order->shipping_address_2; 				// Self-explanatory
-				$invoice->delivery_zipcode = $this->order->shipping_postcode; 				// Self-explanatory
-				$invoice->delivery_city = $this->order->shipping_city; 					// Self-explanatory
-				$invoice->delivery_country = $this->order->shipping_country; 				// 2 character country code: NL for Netherlands, DE for Germany etc
-				
-				$invoice->currency = get_woocommerce_currency();
-				$invoice->action = (int)$this->general_settings['invoice_action'];
-				$invoice->saverelation = (int)$this->general_settings['save_relation'];
-				$invoice->layout = (int)$this->general_settings['layout_code'];
 				
 				
 
-				$invoice->calculation_method = $this->general_settings['calculation_method'];
+				$document->companyname = $this->order->billing_company; 		// Your customers company name
 
-				$invoice->vat = ''; 					// Self-explanatory
+				$document->firstname = $this->order->billing_first_name;
+				$document->lastname = $this->order->billing_last_name;
+				$document->email = $this->order->billing_email;				// Your customers emailaddress (invoice will be sent here)
+				$document->phone = $this->order->billing_phone;
+				$document->address = $this->order->billing_address_1; 				// Self-explanatory
+				$document->address2 = $this->order->billing_address_2; 				// Self-explanatory
+				$document->zipcode = $this->order->billing_postcode; 				// Self-explanatory
+				$document->city = $this->order->billing_city; 					// Self-explanatory
+				$document->country = $this->order->billing_country; 				// 2 character country code: NL for Netherlands, DE for Germany etc
+				
+				$document->vatnumber = get_post_meta( $order_id, 'VAT Number', true );
+
+				$document->delivery_firstname = $this->order->shipping_first_name;
+				$document->delivery_lastname = $this->order->shipping_last_name; 
+				$document->delivery_address = $this->order->shipping_address_1; 
+				$document->delivery_address = $this->order->shipping_address_1; 				// Self-explanatory
+				$document->delivery_address2 = $this->order->shipping_address_2; 				// Self-explanatory
+				$document->delivery_zipcode = $this->order->shipping_postcode; 				// Self-explanatory
+				$document->delivery_city = $this->order->shipping_city; 					// Self-explanatory
+				$document->delivery_country = $this->order->shipping_country; 				// 2 character country code: NL for Netherlands, DE for Germany etc
+				
+				$document->currency = get_woocommerce_currency();
+				$document->action = (int)$this->general_settings['invoice_action'];
+				$document->saverelation = (int)$this->general_settings['save_relation'];
+				$document->layout = (int)$this->general_settings['layout_code'];
+				
+				
+
+				$document->calculation_method = $this->general_settings['calculation_method'];
+
+				$document->vat = ''; 					// Self-explanatory
 
 				$order_date = explode(" ",$this->order->order_date);
 
@@ -82,6 +91,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 				$remark = str_replace('{order_id}', $order_id, $remark);
 				$remark = str_replace('{order_number}', $this->order->get_order_number(), $remark);
 				$remark = str_replace('{order_date}', $date->format($date_format), $remark);
+				$remark = str_replace('{customer_note}', $excerpt, $remark);
 				$paid_date = get_post_meta($order_id,'_paid_date', true);
 
 				$paid = 0;
@@ -94,24 +104,24 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 					$remark .= ' '. str_replace('{method}', $method, $paidremark);
 				}
 				
-				$invoice->payment_method = get_post_meta($order_id,'_payment_method_title', true);
-				$invoice->paid = $paid;
-				$invoice->remark = $remark;
+				$document->payment_method = get_post_meta($order_id,'_payment_method_title', true);
+				$document->paid = $paid;
+				$document->remark = $remark;
 				
 				if($this->general_settings['invoice_date'] == 'order'){
-					$invoice->date = $order_date[0];
+					$document->date = $order_date[0];
 				}else{
-					$invoice->date = Date('Y-m-d');
+					$document->date = Date('Y-m-d');
 				}
 
 				// OPTIONAL: Add tags
-				$invoice->addTag($order_id);
+				$document->addTag($order_id);
 				if(strlen($this->general_settings['invoice_tag']) > 0){
 					$tag = $this->general_settings['invoice_tag'];
 					$tag = str_replace('{method}', $method, $tag);
 					$tag = str_replace('{order_number}', $this->order->get_order_number(), $tag);
 					$tag = str_replace('{order_date}', $date->format($date_format), $tag);
-					$invoice->addTag($tag);
+					$document->addTag($tag);
 				}
 
 				$default_ledger = $this->general_settings['default_ledger_account'];
@@ -153,7 +163,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 					// echo '</pre>';
 					foreach($item['item']['item_meta'] as $key=>$val){
 						$result_array = false;
-						if(substr($key,0,3) == 'pa_'){
+						if(substr($key,0,3) == 'pa_' || substr($key,0,13) == 'attribute_pa_' || substr($key,0,10) == 'attribute_'){
 							if(function_exists('woocommerce_get_product_terms')){
 								$result_array = woocommerce_get_product_terms($item['product_id'], $key, 'names');
 							}elseif(function_exists('wc_get_product_terms')){
@@ -174,6 +184,8 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 							}else{
 								$result = $val[0];
 							}
+							$key = str_replace("attribute_pa_","",$key);
+							$key = str_replace("attribute_","",$key);
 							$key = str_replace("pa_","",$key);
 							$item_desc .= "\n". ucfirst($key) .' : '. $result;
 						}
@@ -196,7 +208,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 										'ledgeraccount' => ($item['ledgeraccount'] > 0) ? $item['ledgeraccount'] : $default_ledger			// Ledger account
 									);
 
-					$invoice->addItem($params);
+					$document->addItem($params);
 					$products_total += $price;
 				}
 
@@ -223,7 +235,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 										'categories' => 'shipping'			// Categories
 									);
 
-					$invoice->addItem($params);
+					$document->addItem($params);
 				}
 				
 				
@@ -257,7 +269,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 		     					'quantity' => 100,
 		     					'categories' => 'fees'
 		             		);
-		            		$invoice->addItem($params);
+		            		$document->addItem($params);
 						}
 					}
 				}
@@ -289,11 +301,11 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
          					'quantity' => 100,
          					'categories' => 'discount'
                  		);
-                $invoice->addItem($params);
+                $document->addItem($params);
 			}
 			
 
-			return $result = $invoice->sendRequest();
+			return $result = $document->sendRequest();
 			
 			unset($this->order);
 		}
@@ -302,10 +314,12 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 		 * Send request for each order_id
 		 */
 		public function process_request( $request_type = 'invoice', $order_ids, $output = false ) {
-			$html = '';
+			$html = 'test';
 			foreach ($order_ids as $order_id) {
 				 $result = $this->send_request( $request_type, $order_id );
-				 sleep(1);
+				 echo $result;
+				 echo 'hier';
+				 //				 sleep(1);
 				 $html .= 'Order '. $order_id .': ';
 				 if($result == true){
 					//add_post_meta($order_id, '_invoiced', true, true); 
@@ -351,7 +365,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 			$request_type = $_GET['request_type'];
 			// die($this->process_template( $request_type, $order_ids )); // or use the filter switch below!
 
-			$invoice = $this->process_request( $request_type, $order_ids, true );
+			$document = $this->process_request( $request_type, $order_ids, true );
 
 
 			echo '<hr /> <a href="javascript:window.close();">'. __('close this window.','wcqc') .'</a>';
