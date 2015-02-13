@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WooCommerce Q-invoice Connect
+ * Plugin Name: WooCommerce q-invoice connect
  * Plugin URI: www.q-invoice.com
  * Description: Print order invoices directly through q-invoice
  * Version: 2.0.10
@@ -50,7 +50,7 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect' ) ) {
 		 * Load the translation / textdomain files
 		 */
 		public function translations() {
-			load_plugin_textdomain( 'wcqc', false, dirname( self::$plugin_basename ) . '/languages' );
+			load_plugin_textdomain( 'woocommerce-qinvoice-connect', false, dirname( self::$plugin_basename ) . '/languages' );
 		}
 
 		/**
