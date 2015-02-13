@@ -29,8 +29,8 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 						
 			$this->options_page_hook = add_submenu_page(
 				$parent_slug,
-				__( 'Q-invoice connect', 'wcqc' ),
-				__( 'Q-invoice connect', 'wcqc' ),
+				__( 'Q-invoice connect', 'woocommerce-qinvoice-connect' ),
+				__( 'Q-invoice connect', 'woocommerce-qinvoice-connect' ),
 				'manage_options',
 				'wcqc_options_page',
 				array( $this, 'settings_page' )
@@ -42,7 +42,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 		 * Add a tab to the settings page
 		 */
 		public function add_settings_tab($tabs) {
-			$tabs[$this->tab_name] = __( 'Q-invoice', 'wcqc' );
+			$tabs[$this->tab_name] = __( 'Q-invoice', 'woocommerce-qinvoice-connect' );
 			return $tabs;
 		}
 		
@@ -53,7 +53,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 		public function wcqc_add_settings_link( $links ) {
 			$settings_link = '<a href="admin.php?page=wcqc_options_page">'. __( 'Settings', 'woocommerce' ) . '</a>';
 			array_push( $links, $settings_link );
-			$signup_link = '<a href="https://app.q-invoice.com/signup.php" target="_blank" title="' . __( 'Create an account', 'wcqc' ) . '">' . __( 'Create an account', 'wcqc' ) . '</a>';
+			$signup_link = '<a href="https://app.q-invoice.com/signup.php" target="_blank" title="' . __( 'Create an account', 'woocommerce-qinvoice-connect' ) . '">' . __( 'Create an account', 'woocommerce-qinvoice-connect' ) . '</a>';
 			array_push( $links, $signup_link );
 			return $links;
 		}
@@ -68,7 +68,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 			}
 		
 			if ( $file == WooCommerce_Qinvoice_Connect::$plugin_basename ) {
-				 $links[] = '<a href="mailto:support@q-invoice.com" target="_blank" title="' . __( 'Get support', 'wcqc' ) . '">' . __( 'Get support', 'wcqc' ) . '</a>';
+				 $links[] = '<a href="mailto:support@q-invoice.com" target="_blank" title="' . __( 'Get support', 'woocommerce-qinvoice-connect' ) . '">' . __( 'Get support', 'woocommerce-qinvoice-connect' ) . '</a>';
 			}
 			return $links;
 		}
@@ -81,7 +81,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 	
 				<div class="wrap">
 					<div class="icon32" id="icon-options-general"><br /></div>
-					<h2><?php _e( 'WooCommerce Q-invoice connect', 'wcqc' ); ?></h2>
+					<h2><?php _e( 'WooCommerce q-invoice connect', 'woocommerce-qinvoice-connect' ); ?></h2>
 					<form method="post" action="options.php">
 						<?php
 							settings_fields( 'wcqc_'.$active_tab.'_settings' );
@@ -122,14 +122,14 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 			// Section.
 			add_settings_section(
 				'general_settings',
-				__( 'General settings', 'wcqc' ),
+				__( 'General settings', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'section_options_callback' ),
 				$option
 			);
 
 			add_settings_field(
 				'api_url',
-				__( 'API url', 'wcqc' ),
+				__( 'API url', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'text_element_callback' ),
 				$option,
 				'general_settings',
@@ -137,13 +137,13 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'api_url',
 					'size'			=> '72',
-					'description'	=> sprintf(__( 'eg. %s', 'wcqc' ),'https://app.q-invoice.com/api/xml/1.1/')
+					'description'	=> sprintf(__( 'eg. %s', 'woocommerce-qinvoice-connect' ),'https://app.q-invoice.com/api/xml/1.1/')
 				)
 			);
 
 			add_settings_field(
 				'api_username',
-				__( 'API username', 'wcqc' ),
+				__( 'API username', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'text_element_callback' ),
 				$option,
 				'general_settings',
@@ -151,13 +151,13 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'api_username',
 					'size'			=> '25',
-					'description'	=> __( 'Your API username', 'wcqc' )
+					'description'	=> __( 'Your API username', 'woocommerce-qinvoice-connect' )
 				)
 			);
 	
 			add_settings_field(
 				'api_password',
-				__( 'API password', 'wcqc' ),
+				__( 'API password', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'text_element_callback' ),
 				$option,
 				'general_settings',
@@ -165,13 +165,13 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'api_password',
 					'size'			=> '25',
-					'description'	=> __( 'Your API password', 'wcqc' )
+					'description'	=> __( 'Your API password', 'woocommerce-qinvoice-connect' )
 				)
 			);
 
 			add_settings_field(
 				'request_type',
-				__( 'Document type', 'wcqc' ),
+				__( 'Document type', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'select_element_callback' ),
 				$option,
 				'general_settings',
@@ -179,7 +179,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'request_type',
 					'size'			=> '25',
-					'description'	=> __( 'Set the document type here', 'wcqc' ),
+					'description'	=> __( 'Set the document type here', 'woocommerce-qinvoice-connect' ),
 					'options' 		=> array('invoice' => 'Invoice', 'quote' => 'Quote',  'order_confirmation' => 'Order confirmation', 'invoice.monthly' => 'Recurring (monthly)', 'invoice.quarterly' => 'Recurring (quarterly)', 'invoice.yearly' => 'Recurring (yearly)')
 				)
 			);
@@ -187,7 +187,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 			
 			add_settings_field(
 				'layout_code',
-				__( 'Layout code', 'wcqc' ),
+				__( 'Layout code', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'text_element_callback' ),
 				$option,
 				'general_settings',
@@ -195,13 +195,13 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'layout_code',
 					'size'			=> '25',
-					'description'	=> __( 'Your q-invoice layout code', 'wcqc' )
+					'description'	=> __( 'Your q-invoice layout code', 'woocommerce-qinvoice-connect' )
 				)
 			);
 
 			add_settings_field(
 				'invoice_remark',
-				__( 'Document remark', 'wcqc' ),
+				__( 'Document remark', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'text_element_callback' ),
 				$option,
 				'general_settings',
@@ -209,13 +209,13 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'invoice_remark',
 					'size'			=> '40',
-					'description'	=> __( 'eg. Your order: {order_id}. Your payment method: {method}. (you can also use {order_number} and {order_date}). Use {customer_note} for the customer note', 'wcqc' )
+					'description'	=> __( 'eg. Your order: {order_id}. Your payment method: {method}. (you can also use {order_number} and {order_date}). Use {customer_note} for the customer note', 'woocommerce-qinvoice-connect' )
 				)
 			);
 
 			add_settings_field(
 				'paid_remark',
-				__( 'Paid remark', 'wcqc' ),
+				__( 'Paid remark', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'text_element_callback' ),
 				$option,
 				'general_settings',
@@ -223,13 +223,13 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'paid_remark',
 					'size'			=> '40',
-					'description'	=> __( 'eg. Your payment has been received. Via {method}', 'wcqc' )
+					'description'	=> __( 'eg. Your payment has been received. Via {method}', 'woocommerce-qinvoice-connect' )
 				)
 			);
 
 			add_settings_field(
 				'invoice_tag',
-				__( 'Document tag', 'wcqc' ),
+				__( 'Document tag', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'text_element_callback' ),
 				$option,
 				'general_settings',
@@ -237,13 +237,13 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'invoice_tag',
 					'size'			=> '25',
-					'description'	=> __( 'eg. Your webshop name (also accepted: {order_number}, {method} and {order_date}', 'wcqc' )
+					'description'	=> __( 'eg. Your webshop name (also accepted: {order_number}, {method} and {order_date}', 'woocommerce-qinvoice-connect' )
 				)
 			);
 
 			add_settings_field(
 				'invoice_trigger',
-				__( 'Send request on:', 'wcqc' ),
+				__( 'Send request on:', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'radio_element_callback' ),
 				$option,
 				'general_settings',
@@ -251,18 +251,18 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'invoice_trigger',
 					'options' 		=> array(
-						'order'			=> __('Every new order','wcqc'),
-						'payment'		=> __( 'After each succesfull payment' , 'wcqc' ),
-						'completed'		=> __( 'When order is marked completed' , 'wcqc' ),
-						'none'			=> __( 'Disable automatic invoicing' , 'wcqc' )
+						'order'			=> __('Every new order','woocommerce-qinvoice-connect'),
+						'payment'		=> __( 'After each succesfull payment' , 'woocommerce-qinvoice-connect' ),
+						'completed'		=> __( 'When order is marked completed' , 'woocommerce-qinvoice-connect' ),
+						'none'			=> __( 'Disable automatic invoicing' , 'woocommerce-qinvoice-connect' )
 					),
-					'description'	=> __('When to send invoice/quote request to q-invoice?'),
+					'description'	=> __('When to send invoice/quote request to q-invoice?','woocommerce-qinvoice-connect'),
 				)
 			);
 
 			add_settings_field(
 				'invoice_action',
-				__( 'After request:', 'wcqc' ),
+				__( 'After request:', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'radio_element_callback' ),
 				$option,
 				'general_settings',
@@ -270,17 +270,17 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'invoice_action',
 					'options' 		=> array(
-						'0'			=> __('Save document as draft','wcqc'),
-						'1'		=> __( 'Finalize and save PDF' , 'wcqc' ),
-						'2'		=> __( 'Finalize and send email with PDF attached to customer' , 'wcqc' )
+						'0'			=> __('Save document as draft','woocommerce-qinvoice-connect'),
+						'1'		=> __( 'Finalize and save PDF' , 'woocommerce-qinvoice-connect' ),
+						'2'		=> __( 'Finalize and send email with PDF attached to customer' , 'woocommerce-qinvoice-connect' )
 					),
-					'description'	=> __('What to do after request has been sent?'),
+					'description'	=> __('What to do after request has been sent?','woocommerce-qinvoice-connect'),
 				)
 			);
 
 			add_settings_field(
 				'save_relation',
-				__( 'Save relation:', 'wcqc' ),
+				__( 'Save relation:', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'radio_element_callback' ),
 				$option,
 				'general_settings',
@@ -288,17 +288,17 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'save_relation',
 					'options' 		=> array(
-						'0'			=> __('No','wcqc'),
-						'1'		=> __( 'Yes' , 'wcqc' )
+						'0'			=> __('No','woocommerce-qinvoice-connect'),
+						'1'		=> __( 'Yes' , 'woocommerce-qinvoice-connect' )
 					),
-					'description'	=> __('Automatically save or update relation details?'),
+					'description'	=> __('Automatically save or update relation details?','woocommerce-qinvoice-connect'),
 				)
 			);
 
 		
 			add_settings_field(
 				'coupon_vat',
-				__( 'Coupon vat', 'wcqc' ),
+				__( 'Coupon vat', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'text_element_callback' ),
 				$option,
 				'general_settings',
@@ -306,13 +306,13 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'coupon_vat',
 					'size'			=> '5',
-					'description'	=> __( 'eg. 21 (without %)', 'wcqc' )
+					'description'	=> __( 'eg. 21 (without %)', 'woocommerce-qinvoice-connect' )
 				)
 			);
 
 			add_settings_field(
 				'default_ledger_account',
-				__( 'Default ledger account', 'wcqc' ),
+				__( 'Default ledger account', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'text_element_callback' ),
 				$option,
 				'general_settings',
@@ -320,7 +320,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'default_ledger_account',
 					'size'			=> '10',
-					'description'	=> __( 'The default ledger account for your revenue. eg. 8000', 'wcqc' )
+					'description'	=> __( 'The default ledger account for your revenue. eg. 8000', 'woocommerce-qinvoice-connect' )
 				)
 			);
 
@@ -328,7 +328,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 			
 			add_settings_field(
 				'calculation_method',
-				__( 'Calculation method:', 'wcqc' ),
+				__( 'Calculation method:', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'radio_element_callback' ),
 				$option,
 				'general_settings',
@@ -336,16 +336,16 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'calculation_method',
 					'options' 		=> array(
-						'incl'		=> __('Prices <strong>including VAT</strong> are leading','wcqc'),
-						'excl'		=> __( 'Prices <strong>excluding VAT</strong> are leading' , 'wcqc' )
+						'incl'		=> __('Prices <strong>including VAT</strong> are leading','woocommerce-qinvoice-connect'),
+						'excl'		=> __( 'Prices <strong>excluding VAT</strong> are leading' , 'woocommerce-qinvoice-connect' )
 					),
-					'description'	=> __('Set the preferred calculation method'),
+					'description'	=> __('Set the preferred calculation method','woocommerce-qinvoice-connect'),
 				)
 			);
 
 			add_settings_field(
 				'invoice_date',
-				__( 'Invoice date:', 'wcqc' ),
+				__( 'Invoice date:', 'woocommerce-qinvoice-connect' ),
 				array( &$this, 'radio_element_callback' ),
 				$option,
 				'general_settings',
@@ -353,10 +353,10 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'invoice_date',
 					'options' 		=> array(
-						'order'		=> __('Use order date for invoice date','wcqc'),
-						'invoice'	=> __( 'Use date of sending request' , 'wcqc' )
+						'order'		=> __('Use order date for invoice date','woocommerce-qinvoice-connect'),
+						'invoice'	=> __( 'Use date of sending request' , 'woocommerce-qinvoice-connect' )
 					),
-					'description'	=> __('Which date should be used as invoice date?'),
+					'description'	=> __('Which date should be used as invoice date?','woocommerce-qinvoice-connect'),
 				)
 			);
 
@@ -379,7 +379,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 						'menu'			=> $option,
 						'id'			=> 'exclude_payment_method',
 						'options' 		=> $options_array,
-						'description'	=> __('Exclude certain payment methods. For selected methods no request will be sent.'),
+						'description'	=> __('Exclude certain payment methods. For selected methods no request will be sent.','woocommerce-qinvoice-connect'),
 					)
 				);
 			} 
