@@ -4,7 +4,7 @@ Donate link: n/a
 Tags: billing, invoicing, woocommerce, packing, packingslip
 Requires at least: 3.0.1
 Tested up to: 4.0
-Stable tag: 2.0.9
+Stable tag: 2.0.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,12 @@ Dutch: http://help.q-invoice.nl/woocommerce-facturatie-plugin-instellen/
 
 
 == Changelog ==
+
+= 2.0.10
+* Fixed support for custom attributes
+* Fixed VAT setting for coupons
+* Added support for recurring invoices
+* Added German language
 
 = 2.0.9
 * Added support for customer note in document remark

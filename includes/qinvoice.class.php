@@ -64,10 +64,14 @@ if ( !class_exists( 'qinvoice' ) ) {
 		}
 
 		public function setDocumentType($type){
+			$doc_type = explode(".",$type);
+			$type = $doc_type[0];
+			$mode = $doc_type[1];
 			if(!in_array($type, array('invoice','quote','order_confirmation'))){
 				$type = 'invoice';
 			}
 			$this->documenttype = $type;
+			$this->recurring = $mode;
 		}
 
 		public function setRecurring($recurring){

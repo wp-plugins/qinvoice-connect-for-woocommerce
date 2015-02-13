@@ -156,42 +156,29 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 						$vatp = 0;
 					}
 
-			        // Show all of the custom fields  
+					// populate array with attributes
+					$attr_array = array();
+					foreach(get_post_meta( $product->id , '_product_attributes' ) as $attr){
+						foreach($attr as $name=>$attr_data){
+							if($attr_data['is_variation'] == 1 || 1==1){
+								$attr_array[] = $name;
+								$attr_names[$name] = $attr_data['name'];
+							}
+						}
+					}
+					
 					$item_desc = '';
-					// echo '<pre>';
-					// print_r($item['item']['item_meta']);
-					// echo '</pre>';
+					
 					foreach($item['item']['item_meta'] as $key=>$val){
 						$result_array = false;
-						if(substr($key,0,3) == 'pa_' || substr($key,0,13) == 'attribute_pa_' || substr($key,0,10) == 'attribute_'){
-							if(function_exists('woocommerce_get_product_terms')){
-								$result_array = woocommerce_get_product_terms($item['product_id'], $key, 'names');
-							}elseif(function_exists('wc_get_product_terms')){
-								$result_array = wc_get_product_terms($item['product_id'], $key, 'names');
-							}
-
-							if(is_array($result_array)){
-								$result = false;
-								foreach($result_array as $res){
-									if(strtolower(str_replace(" ","-",$res)) == $val[0]){
-										$result = $res;
-										break;
-									}
-								}
-								if($result == false){
-									$result = $val[0];
-								}
-							}else{
-								$result = $val[0];
-							}
+						if(in_array($key,$attr_array)){
 							$key = str_replace("attribute_pa_","",$key);
 							$key = str_replace("attribute_","",$key);
 							$key = str_replace("pa_","",$key);
-							$item_desc .= "\n". ucfirst($key) .' : '. $result;
+							$item_desc .= "\n". strlen($attr_names[$key]) > 0 ? $attr_names[$key] : ucfirst($key) .' : '. $result;
 						}
 					}
-
-										
+						
 					
 				
 					$price = ($item['line_subtotal']/$item['quantity'])*100;
@@ -280,7 +267,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 			$discount = false;
 			$description = '';
 			foreach($this->order->get_used_coupons() as $code){
-
+				$coupon = new WC_Coupon($code);
                  if($coupon->apply_before_tax == 'yes'){
                  	$vatp = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'coupon_vat' );
                  }else{
@@ -304,7 +291,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
                 $document->addItem($params);
 			}
 			
-
+			
 			return $result = $document->sendRequest();
 			
 			unset($this->order);

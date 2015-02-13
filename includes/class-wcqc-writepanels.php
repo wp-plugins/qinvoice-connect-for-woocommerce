@@ -83,6 +83,10 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 						<li style="float:left;"><a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=order_confirmation&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'New order confirmation', 'wcqc' ) .'">'. __( 'New order confirmation', 'wcqc' ) .'</a></li>
 					</ul>
 					<br style="clear:both;"/>';
+
+			$html .= '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice.monthly&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'Recurring monthly', 'wcqc' ) .'">'. __( 'Recurring monthly', 'wcqc' ) .'</a>';
+			$html .= '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice.quarterly&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'Recurring quarterly', 'wcqc' ) .'">'. __( 'Recurring quarterly', 'wcqc' ) .'</a>';
+			$html .= '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice.yearly&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'Recurring yearly', 'wcqc' ) .'">'. __( 'Recurring yearly', 'wcqc' ) .'</a>';
 			echo $html;
 		}
 

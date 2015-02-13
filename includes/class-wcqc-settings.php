@@ -137,7 +137,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'menu'			=> $option,
 					'id'			=> 'api_url',
 					'size'			=> '72',
-					'description'	=> sprintf(__( 'eg. %s', 'wcqc' ),'https://app.q-invoice.com/api/xml/1.2/')
+					'description'	=> sprintf(__( 'eg. %s', 'wcqc' ),'https://app.q-invoice.com/api/xml/1.1/')
 				)
 			);
 
@@ -180,10 +180,11 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'id'			=> 'request_type',
 					'size'			=> '25',
 					'description'	=> __( 'Set the document type here', 'wcqc' ),
-					'options' 		=> array('invoice' => 'Invoice', 'quote' => 'Quote',  'order_confirmation' => 'Order confirmation')
+					'options' 		=> array('invoice' => 'Invoice', 'quote' => 'Quote',  'order_confirmation' => 'Order confirmation', 'invoice.monthly' => 'Recurring (monthly)', 'invoice.quarterly' => 'Recurring (quarterly)', 'invoice.yearly' => 'Recurring (yearly)')
 				)
 			);
 
+			
 			add_settings_field(
 				'layout_code',
 				__( 'Layout code', 'wcqc' ),
@@ -395,7 +396,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 			global $wcqc;
 
 			$default_general = array(
-				'api_url'	=> 'https://app.q-invoice.com/api/xml/1.2/',
+				'api_url'	=> 'https://app.q-invoice.com/api/xml/1.1/',
 			);
 
 			update_option( 'wcqc_general_settings', $default_general );
@@ -586,7 +587,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 		 * @return void.
 		 */
 		public function custom_fields_section() {
-			_e( 'These are used for the (optional) footer columns in the <em>Modern (Premium)</em> template, but can also be used for other elements in your custom template' , 'wcqc' );
+			
 		}
 
 		/**
