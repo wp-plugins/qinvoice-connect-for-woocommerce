@@ -1,0 +1,320 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Woocommerce Q-invoice Connect\n"
+"POT-Creation-Date: 2015-02-13 12:55+0100\n"
+"PO-Revision-Date: 2015-02-13 13:30+0100\n"
+"Last-Translator: Martin Bertelmann <martin.bertelmann@komputerknirps.de>\n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../includes/class-wcqc-export.php:312
+msgid "Invoice generated."
+msgstr "Rechnung erstellt."
+
+#: ../includes/class-wcqc-export.php:314
+msgid "Quote generated."
+msgstr "Angebot erstellt."
+
+#: ../includes/class-wcqc-export.php:316
+msgid "Order confirmation generated."
+msgstr "Bestellbestätigung erstellt."
+
+#: ../includes/class-wcqc-export.php:319
+msgid "Uhoh. Something went wrong."
+msgstr "Uhoh. Da lief was falsch."
+
+#: ../includes/class-wcqc-export.php:334 ../includes/class-wcqc-export.php:344
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+"Sie haben keine ausreichende Berechtigung, um auf diese Seite zuzugreifen."
+
+#: ../includes/class-wcqc-export.php:339
+msgid "Missing parameters."
+msgstr "Fehlende Parameter."
+
+#: ../includes/class-wcqc-export.php:358
+msgid "close this window."
+msgstr "Fenster schließen."
+
+#: ../includes/class-wcqc-settings.php:32
+#: ../includes/class-wcqc-settings.php:33
+msgid "Q-invoice connect"
+msgstr "q-invoice Connect"
+
+#: ../includes/class-wcqc-settings.php:45
+msgid "Q-invoice"
+msgstr "q-invoice"
+
+#: ../includes/class-wcqc-settings.php:54
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: ../includes/class-wcqc-settings.php:56
+msgid "Create an account"
+msgstr "Neuen Account erstellen"
+
+#: ../includes/class-wcqc-settings.php:71
+msgid "Get support"
+msgstr "﻿Support kontaktieren"
+
+#: ../includes/class-wcqc-settings.php:84
+msgid "WooCommerce Q-invoice connect"
+msgstr "WooCommerce q-invoice Connect"
+
+#: ../includes/class-wcqc-settings.php:125
+msgid "General settings"
+msgstr "Allgemeine Einstellungen"
+
+#: ../includes/class-wcqc-settings.php:132
+msgid "API url"
+msgstr "API-URL"
+
+#: ../includes/class-wcqc-settings.php:140
+#, php-format
+msgid "eg. %s"
+msgstr "z.B. %s"
+
+#: ../includes/class-wcqc-settings.php:146
+msgid "API username"
+msgstr "API Benutzername"
+
+#: ../includes/class-wcqc-settings.php:154
+msgid "Your API username"
+msgstr "Ihr API Benutzername"
+
+#: ../includes/class-wcqc-settings.php:160
+msgid "API password"
+msgstr "API Passwort"
+
+#: ../includes/class-wcqc-settings.php:168
+msgid "Your API password"
+msgstr "Ihr API-Passwort"
+
+#: ../includes/class-wcqc-settings.php:174
+msgid "Document type"
+msgstr "﻿Dokumenttyp"
+
+#: ../includes/class-wcqc-settings.php:182
+msgid "Set the document type here"
+msgstr "Den Dokumenttyp stellen Sie hier ein"
+
+#: ../includes/class-wcqc-settings.php:190
+msgid "Layout code"
+msgstr "Layout Code"
+
+#: ../includes/class-wcqc-settings.php:198
+msgid "Your q-invoice layout code"
+msgstr "Ihr q-invoice Layout Code"
+
+#: ../includes/class-wcqc-settings.php:204
+msgid "Document remark"
+msgstr "Bemerkungen zum Dokument"
+
+#: ../includes/class-wcqc-settings.php:212
+msgid ""
+"eg. Your order: {order_id}. Your payment method: {method}. (you can also use "
+"{order_number} and {order_date}). Use {customer_note} for the customer note"
+msgstr ""
+"zB. Ihr Auftrag: {order_id}. Ihre Zahlungsmethode: {method}. (Sie können "
+"auch {order_number} und {order_date} nutzen). Verwenden Sie {customer_note} "
+"um Ihre Kundennotiz auszugeben"
+
+#: ../includes/class-wcqc-settings.php:218
+msgid "Paid remark"
+msgstr "Als bezahlt markieren"
+
+#: ../includes/class-wcqc-settings.php:226
+msgid "eg. Your payment has been received. Via {method}"
+msgstr "z.B. Ihre Zahlung via {method} ist eingegangen."
+
+#: ../includes/class-wcqc-settings.php:232
+msgid "Document tag"
+msgstr "Dokument-Tag"
+
+#: ../includes/class-wcqc-settings.php:240
+msgid ""
+"eg. Your webshop name (also accepted: {order_number}, {method} and "
+"{order_date}"
+msgstr ""
+"z.B. Ihr Webshop Namen (auch möglich: {order_number}, {method} und "
+"{order_date}"
+
+#: ../includes/class-wcqc-settings.php:246
+msgid "Send request on:"
+msgstr "Wann soll die Anfrage versendet werden?"
+
+#: ../includes/class-wcqc-settings.php:254
+msgid "Every new order"
+msgstr "Jede neue Bestellung"
+
+#: ../includes/class-wcqc-settings.php:255
+msgid "After each succesfull payment"
+msgstr "Nach jeder erfolgreichen Zahlung"
+
+#: ../includes/class-wcqc-settings.php:256
+msgid "When order is marked completed"
+msgstr "Wenn die Bestellung als komplett markiert wurde"
+
+#: ../includes/class-wcqc-settings.php:257
+msgid "Disable automatic invoicing"
+msgstr "Automatische Rechnung deaktivieren"
+
+#: ../includes/class-wcqc-settings.php:259
+msgid "When to send invoice/quote request to q-invoice?"
+msgstr "Wenn soll Rechnung / Angebotsanfrage an q-invoice versendet werden?"
+
+#: ../includes/class-wcqc-settings.php:265
+msgid "After request:"
+msgstr "Nach Anfrage:"
+
+#: ../includes/class-wcqc-settings.php:273
+msgid "Save document as draft"
+msgstr "Dokument als Entwurf speichern"
+
+#: ../includes/class-wcqc-settings.php:274
+msgid "Finalize and save PDF"
+msgstr "Fertigstellen und als PDF speichern"
+
+#: ../includes/class-wcqc-settings.php:275
+msgid "Finalize and send email with PDF attached to customer"
+msgstr "Fertigstellen und E-Mail mit PDF im Anhang an Kunden versenden"
+
+#: ../includes/class-wcqc-settings.php:277
+msgid "What to do after request has been sent?"
+msgstr "Was soll passieren, nachdem Anfrage versendet wurde?"
+
+#: ../includes/class-wcqc-settings.php:283
+msgid "Save relation:"
+msgstr "Kundendaten speichern:"
+
+#: ../includes/class-wcqc-settings.php:291
+msgid "No"
+msgstr "Nein"
+
+#: ../includes/class-wcqc-settings.php:292
+msgid "Yes"
+msgstr "Ja"
+
+#: ../includes/class-wcqc-settings.php:294
+msgid "Automatically save or update relation details?"
+msgstr "Kundendaten automatisch speichern oder aktualisieren?"
+
+#: ../includes/class-wcqc-settings.php:301
+msgid "Coupon vat"
+msgstr "Rabatt USt."
+
+#: ../includes/class-wcqc-settings.php:309
+msgid "eg. 21 (without %)"
+msgstr "z.B. 19 (ohne %)"
+
+#: ../includes/class-wcqc-settings.php:315
+msgid "Default ledger account"
+msgstr "Standard Buchungskonto"
+
+#: ../includes/class-wcqc-settings.php:323
+msgid "The default ledger account for your revenue. eg. 8000"
+msgstr "Der Standardbuchungskonto für Ihre Einnahmen. zB. 8000"
+
+#: ../includes/class-wcqc-settings.php:331
+msgid "Calculation method:"
+msgstr "﻿Berechnungsmethode"
+
+#: ../includes/class-wcqc-settings.php:339
+msgid "Prices <strong>including VAT</strong> are leading"
+msgstr "Preise <strong>inklusive Umsatzsteuer</strong>"
+
+#: ../includes/class-wcqc-settings.php:340
+msgid "Prices <strong>excluding VAT</strong> are leading"
+msgstr "Preise <strong>ohne Mehrwertsteuer</strong>"
+
+#: ../includes/class-wcqc-settings.php:342
+msgid "Set the preferred calculation method"
+msgstr "Stellen Sie hier das bevorzugte Berechnungsverfahren ein"
+
+#: ../includes/class-wcqc-settings.php:348
+msgid "Invoice date:"
+msgstr "Rechnungsdatum:"
+
+#: ../includes/class-wcqc-settings.php:356
+msgid "Use order date for invoice date"
+msgstr "Verwenden Bestelldatum als Rechnungsdatum"
+
+#: ../includes/class-wcqc-settings.php:357
+msgid "Use date of sending request"
+msgstr "Verwenden Sie das Datum an dem die Anfrage versendet wird"
+
+#: ../includes/class-wcqc-settings.php:359
+msgid "Which date should be used as invoice date?"
+msgstr "Welches Datum soll als Rechnungsdatum verwendet werden?"
+
+#: ../includes/class-wcqc-settings.php:374
+msgid "Exclude payment methods:"
+msgstr "Zahlungsmethoden ausschließen:"
+
+#: ../includes/class-wcqc-settings.php:382
+msgid ""
+"Exclude certain payment methods. For selected methods no request will be "
+"sent."
+msgstr ""
+"Bestimmte Zahlungsmethoden ausschließen? Für ausgewählte Methoden werden "
+"keine Anfrage gesendet."
+
+#: ../includes/class-wcqc-writepanels.php:71
+msgid "Send to Q-invoice.com"
+msgstr "An q-invoice.com versenden"
+
+#: ../includes/class-wcqc-writepanels.php:81
+msgid "New invoice"
+msgstr "Neue Rechnung"
+
+#: ../includes/class-wcqc-writepanels.php:82
+msgid "New quote"
+msgstr "Neues Angebot"
+
+#: ../includes/class-wcqc-writepanels.php:83
+msgid "New order confirmation"
+msgstr "Neue Bestellbestätigung"
+
+#: ../includes/class-wcqc-writepanels.php:87
+msgid "Recurring monthly"
+msgstr "Monatlich wiederkehrend"
+
+#: ../includes/class-wcqc-writepanels.php:88
+msgid "Recurring quarterly"
+msgstr "Quartalsweise wiederkehrend"
+
+#: ../includes/class-wcqc-writepanels.php:89
+msgid "Recurring yearly"
+msgstr "Jährlich wiederkehrend"
+
+#: ../includes/class-wcqc-writepanels.php:103
+#: ../includes/class-wcqc-writepanels.php:104
+msgid "Create invoices"
+msgstr "Rechnung erstellen"
+
+#: ../includes/class-wcqc-writepanels.php:106
+#: ../includes/class-wcqc-writepanels.php:107
+msgid "Create quotes"
+msgstr "Angebot erstellen"
+
+#: ../includes/class-wcqc-writepanels.php:109
+#: ../includes/class-wcqc-writepanels.php:110
+msgid "Create order confimations"
+msgstr "Bestellbestätigung erstellen"
+
+#: ../woocommerce-qinvoice-connect.php:103
+#, php-format
+msgid ""
+"WooCommerce Qinvoice Connect requires %sWooCommerce%s to be installed & "
+"activated!"
+msgstr ""
+"Sie benötigen eine installierte und aktivierte Version von %sWooCommerce%s "
+"um WooCommerce q-invoice Connect nutzen zu können."
