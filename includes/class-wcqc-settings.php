@@ -180,7 +180,14 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 					'id'			=> 'request_type',
 					'size'			=> '25',
 					'description'	=> __( 'Set the document type here', 'woocommerce-qinvoice-connect' ),
-					'options' 		=> array('invoice' => 'Invoice', 'quote' => 'Quote',  'order_confirmation' => 'Order confirmation', 'invoice.monthly' => 'Recurring (monthly)', 'invoice.quarterly' => 'Recurring (quarterly)', 'invoice.yearly' => 'Recurring (yearly)')
+					'options' 		=> array(	
+												'invoice' => __('Invoice','woocommerce-qinvoice-connect'), 
+												'quote' => __('Quote','woocommerce-qinvoice-connect'),  
+												'order_confirmation' => __('Order confirmation','woocommerce-qinvoice-connect'), 
+												'invoice.monthly' => __('Recurring (monthly)','woocommerce-qinvoice-connect'), 
+												'invoice.quarterly' => __('Recurring (quarterly)','woocommerce-qinvoice-connect'), 
+												'invoice.yearly' => __('Recurring (yearly)','woocommerce-qinvoice-connect')
+									)
 				)
 			);
 
