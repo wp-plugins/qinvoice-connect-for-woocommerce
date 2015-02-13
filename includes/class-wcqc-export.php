@@ -172,10 +172,12 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 					foreach($item['item']['item_meta'] as $key=>$val){
 						$result_array = false;
 						if(in_array($key,$attr_array)){
+							$result = $val[0];
 							$key = str_replace("attribute_pa_","",$key);
 							$key = str_replace("attribute_","",$key);
 							$key = str_replace("pa_","",$key);
-							$item_desc .= "\n". strlen($attr_names[$key]) > 0 ? $attr_names[$key] : ucfirst($key) .' : '. $result;
+							$item_desc .= "\n";
+							$item_desc .= strlen($attr_names[$key]) > 0 ? $attr_names[$key] : ucfirst($key) .' : '. $result;
 						}
 					}
 						
