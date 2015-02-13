@@ -23,9 +23,9 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 		 */
 		public function add_scripts() {
 			if( $this->is_order_edit_page() ) {
-				wp_enqueue_script( 'woocommerce-qinvoice-connect', WooCommerce_Qinvoice_Connect::$plugin_url . 'js/script.js', array( 'jquery' ) );
+				wp_enqueue_script( 'wcqc', WooCommerce_Qinvoice_Connect::$plugin_url . 'js/script.js', array( 'jquery' ) );
 				wp_localize_script(  
-					'woocommerce-qinvoice-connect',  
+					'wcqc',  
 					'wcqc_ajax',  
 					array(  
 						'ajaxurl' => admin_url( 'admin-ajax.php' ), // URL to WordPress ajax handling page  
@@ -68,7 +68,7 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 		 * Add the meta box on the view order page
 		 */
 		public function add_meta_box() {
-			add_meta_box( 'wcqc-box', __( 'Send to Q-invoice.com', 'woocommerce-qinvoice-connect' ), array( $this, 'create_box_content' ), 'shop_order', 'side', 'default' );
+			add_meta_box( 'wcqc-box', __( 'Send to q-invoice.com', 'woocommerce-qinvoice-connect' ), array( $this, 'create_box_content' ), 'shop_order', 'side', 'default' );
 		}
 
 		/**
