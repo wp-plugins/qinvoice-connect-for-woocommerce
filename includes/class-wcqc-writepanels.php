@@ -23,9 +23,9 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 		 */
 		public function add_scripts() {
 			if( $this->is_order_edit_page() ) {
-				wp_enqueue_script( 'wcqc', WooCommerce_Qinvoice_Connect::$plugin_url . 'js/script.js', array( 'jquery' ) );
+				wp_enqueue_script( 'woocommerce-qinvoice-connect', WooCommerce_Qinvoice_Connect::$plugin_url . 'js/script.js', array( 'jquery' ) );
 				wp_localize_script(  
-					'wcqc',  
+					'woocommerce-qinvoice-connect',  
 					'wcqc_ajax',  
 					array(  
 						'ajaxurl' => admin_url( 'admin-ajax.php' ), // URL to WordPress ajax handling page  
@@ -52,14 +52,14 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 		 */
 		public function add_listing_actions( $order ) {
 			?>
-			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice&order_ids=' . $order->id ), 'generate_wcqc' ); ?>" class="button tips wcqc" target="_blank" alt="<?php esc_attr_e( 'Invoice', 'wcqc' ); ?>" data-tip="<?php esc_attr_e( 'Invoice', 'wcqc' ); ?>">
-				<img src="<?php echo WooCommerce_Qinvoice_Connect::$plugin_url . 'images/invoice.png'; ?>" alt="<?php esc_attr_e( 'Invoice', 'wcqc' ); ?>" width="16">
+			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice&order_ids=' . $order->id ), 'generate_wcqc' ); ?>" class="button tips wcqc" target="_blank" alt="<?php esc_attr_e( 'Invoice', 'woocommerce-qinvoice-connect' ); ?>" data-tip="<?php esc_attr_e( 'Invoice', 'woocommerce-qinvoice-connect' ); ?>">
+				<img src="<?php echo WooCommerce_Qinvoice_Connect::$plugin_url . 'images/invoice.png'; ?>" alt="<?php esc_attr_e( 'Invoice', 'woocommerce-qinvoice-connect' ); ?>" width="16">
 			</a>
-			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=quote&order_ids=' . $order->id ), 'generate_wcqc' ); ?>" class="button tips wcqc" target="_blank" alt="<?php esc_attr_e( 'Quote', 'wcqc' ); ?>" data-tip="<?php esc_attr_e( 'Quote', 'wcqc' ); ?>">
-				<img src="<?php echo WooCommerce_Qinvoice_Connect::$plugin_url . 'images/quote.png'; ?>" alt="<?php esc_attr_e( 'Quote', 'wcqc' ); ?>" width="16">
+			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=quote&order_ids=' . $order->id ), 'generate_wcqc' ); ?>" class="button tips wcqc" target="_blank" alt="<?php esc_attr_e( 'Quote', 'woocommerce-qinvoice-connect' ); ?>" data-tip="<?php esc_attr_e( 'Quote', 'woocommerce-qinvoice-connect' ); ?>">
+				<img src="<?php echo WooCommerce_Qinvoice_Connect::$plugin_url . 'images/quote.png'; ?>" alt="<?php esc_attr_e( 'Quote', 'woocommerce-qinvoice-connect' ); ?>" width="16">
 			</a>
-			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=order_confirmation&order_ids=' . $order->id ), 'generate_wcqc' ); ?>" class="button tips wcqc" target="_blank" alt="<?php esc_attr_e( 'Order confirmation', 'wcqc' ); ?>" data-tip="<?php esc_attr_e( 'Order confirmation', 'wcqc' ); ?>">
-				<img src="<?php echo WooCommerce_Qinvoice_Connect::$plugin_url . 'images/order_confirmation.png'; ?>" alt="<?php esc_attr_e( 'Order confirmation', 'wcqc' ); ?>" width="16">
+			<a href="<?php echo wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=order_confirmation&order_ids=' . $order->id ), 'generate_wcqc' ); ?>" class="button tips wcqc" target="_blank" alt="<?php esc_attr_e( 'Order confirmation', 'woocommerce-qinvoice-connect' ); ?>" data-tip="<?php esc_attr_e( 'Order confirmation', 'woocommerce-qinvoice-connect' ); ?>">
+				<img src="<?php echo WooCommerce_Qinvoice_Connect::$plugin_url . 'images/order_confirmation.png'; ?>" alt="<?php esc_attr_e( 'Order confirmation', 'woocommerce-qinvoice-connect' ); ?>" width="16">
 			</a>
 			<?php
 		}
@@ -68,7 +68,7 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 		 * Add the meta box on the view order page
 		 */
 		public function add_meta_box() {
-			add_meta_box( 'wcqc-box', __( 'Send to Q-invoice.com', 'wcqc' ), array( $this, 'create_box_content' ), 'shop_order', 'side', 'default' );
+			add_meta_box( 'wcqc-box', __( 'Send to Q-invoice.com', 'woocommerce-qinvoice-connect' ), array( $this, 'create_box_content' ), 'shop_order', 'side', 'default' );
 		}
 
 		/**
@@ -78,15 +78,15 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 			global $post_id;
 			
 			$html = '<ul class="wcqc-actions" >
-						<li style="float:left;"><a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'New invoice', 'wcqc' ) .'">'. __( 'New invoice', 'wcqc' ) .'</a></li>
-						<li style="float:left;"><a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=quote&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'New quote', 'wcqc' ) .'">'. __( 'New quote', 'wcqc' ) .'</a></li>
-						<li style="float:left;"><a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=order_confirmation&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'New order confirmation', 'wcqc' ) .'">'. __( 'New order confirmation', 'wcqc' ) .'</a></li>
+						<li style="float:left;"><a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'New invoice', 'woocommerce-qinvoice-connect' ) .'">'. __( 'New invoice', 'woocommerce-qinvoice-connect' ) .'</a></li>
+						<li style="float:left;"><a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=quote&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'New quote', 'woocommerce-qinvoice-connect' ) .'">'. __( 'New quote', 'woocommerce-qinvoice-connect' ) .'</a></li>
+						<li style="float:left;"><a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=order_confirmation&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'New order confirmation', 'woocommerce-qinvoice-connect' ) .'">'. __( 'New order confirmation', 'woocommerce-qinvoice-connect' ) .'</a></li>
 					</ul>
 					<br style="clear:both;"/>';
 
-			$html .= '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice.monthly&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'Recurring monthly', 'wcqc' ) .'">'. __( 'Recurring monthly', 'wcqc' ) .'</a>';
-			$html .= '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice.quarterly&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'Recurring quarterly', 'wcqc' ) .'">'. __( 'Recurring quarterly', 'wcqc' ) .'</a>';
-			$html .= '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice.yearly&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'Recurring yearly', 'wcqc' ) .'">'. __( 'Recurring yearly', 'wcqc' ) .'</a>';
+			$html .= '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice.monthly&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'Recurring monthly', 'woocommerce-qinvoice-connect' ) .'">'. __( 'Recurring monthly', 'woocommerce-qinvoice-connect' ) .'</a>';
+			$html .= '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice.quarterly&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'Recurring quarterly', 'woocommerce-qinvoice-connect' ) .'">'. __( 'Recurring quarterly', 'woocommerce-qinvoice-connect' ) .'</a>';
+			$html .= '<a href="'. wp_nonce_url( admin_url( 'admin-ajax.php?action=generate_wcqc&request_type=invoice.yearly&order_ids=' . $post_id ), 'generate_wcqc' ) .'" class="button" target="_blank" alt="'. esc_attr__( 'Recurring yearly', 'woocommerce-qinvoice-connect' ) .'">'. __( 'Recurring yearly', 'woocommerce-qinvoice-connect' ) .'</a>';
 			echo $html;
 		}
 
@@ -100,14 +100,14 @@ if ( !class_exists( 'WooCommerce_Qinvoice_Connect_Writepanels' ) ) {
 				?>
 				<script type="text/javascript">
 					jQuery(document).ready(function() {
-						jQuery('<option>').val('invoice').text('<?php _e( 'Create invoices', 'wcqc' )?>').appendTo("select[name='action']");
-						jQuery('<option>').val('invoice').text('<?php _e( 'Create invoices', 'wcqc' )?>').appendTo("select[name='action2']");
+						jQuery('<option>').val('invoice').text('<?php _e( 'Create invoices', 'woocommerce-qinvoice-connect' )?>').appendTo("select[name='action']");
+						jQuery('<option>').val('invoice').text('<?php _e( 'Create invoices', 'woocommerce-qinvoice-connect' )?>').appendTo("select[name='action2']");
 
-						jQuery('<option>').val('quote').text('<?php _e( 'Create quotes', 'wcqc' )?>').appendTo("select[name='action']");
-						jQuery('<option>').val('quote').text('<?php _e( 'Create quotes', 'wcqc' )?>').appendTo("select[name='action2']");
+						jQuery('<option>').val('quote').text('<?php _e( 'Create quotes', 'woocommerce-qinvoice-connect' )?>').appendTo("select[name='action']");
+						jQuery('<option>').val('quote').text('<?php _e( 'Create quotes', 'woocommerce-qinvoice-connect' )?>').appendTo("select[name='action2']");
 
-						jQuery('<option>').val('order_confirmation').text('<?php _e( 'Create order confimations', 'wcqc' )?>').appendTo("select[name='action']");
-						jQuery('<option>').val('order_confirmation').text('<?php _e( 'Create order confimations', 'wcqc' )?>').appendTo("select[name='action2']");
+						jQuery('<option>').val('order_confirmation').text('<?php _e( 'Create order confimations', 'woocommerce-qinvoice-connect' )?>').appendTo("select[name='action']");
+						jQuery('<option>').val('order_confirmation').text('<?php _e( 'Create order confimations', 'woocommerce-qinvoice-connect' )?>').appendTo("select[name='action2']");
 					});
 				</script>
 				<?php
