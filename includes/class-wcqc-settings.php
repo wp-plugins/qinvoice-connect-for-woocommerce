@@ -371,7 +371,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Settings' ) ) {
 				}
 				add_settings_field(
 					'exclude_payment_method',
-					__( 'Exclude payment methods:', 'wpo_wcpdf' ),
+					__( 'Exclude payment methods:', 'woocommerce-qinvoice-connect' ),
 					array( &$this, 'multiple_checkbox_element_callback' ),
 					$option,
 					'general_settings',
