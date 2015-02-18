@@ -274,21 +274,39 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 			$description = '';
 			foreach($this->order->get_used_coupons() as $code){
 				$coupon = new WC_Coupon($code);
+				
+				//echo $this->general_settings['coupon_vat'];
                  if($coupon->apply_before_tax == 'yes'){
                  	$vatp = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'coupon_vat' );
+                 	if($vatp == ''){
+                 		// fallback
+                 		$vatp = $this->general_settings['coupon_vat'];
+                 	}
                  }else{
                  	$vatp = 0;
                  }
                  $discount = true;
                  $description .= $code .' ';
 			}
+
+			if($this->general_settings['calculation_method'] == 'incl'){
+				$price_incl = $this->order->get_total_discount();
+				$price = (($this->order->get_total_discount()/(100 + $vatp))*100);
+				$price_vat = $price_incl - $price;
+			}else{
+				$price = $this->order->get_total_discount();
+				$price_incl = round($this->order->get_total_discount()*(100 + $vatp),2)/100;
+				$price_vat = $price_incl - $price;
+			}
+
+
 			if($discount == true){
 				$params = array( 	
 							'code' => 'DSCNT',
          					'description' => $description,
-         					'price' => $this->order->get_total_discount()*-100,
-         					'price_incl' => '',
-							'price_vat' => '',
+         					'price' => $price*-100,
+         					'price_incl' => $price_incl*-100,
+							'price_vat' => $price_vat*-100,
          					'vatpercentage' => $vatp*100,
          					'discount' => 0,
          					'quantity' => 100,
@@ -296,8 +314,10 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
                  		);
                 $document->addItem($params);
 			}
-			
-			
+			// echo '<pre>';
+			// print_r($params);
+			// echo '</pre>';
+			// die();
 			return $result = $document->sendRequest();
 			
 			unset($this->order);

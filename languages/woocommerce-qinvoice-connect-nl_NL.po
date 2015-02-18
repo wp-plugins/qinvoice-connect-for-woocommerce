@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Woocommerce Q-invoice Connect\n"
-"POT-Creation-Date: 2015-02-13 12:55+0100\n"
-"PO-Revision-Date: 2015-02-13 12:55+0100\n"
+"POT-Creation-Date: 2015-02-13 18:30+0100\n"
+"PO-Revision-Date: 2015-02-13 18:30+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -15,31 +15,31 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../includes/class-wcqc-export.php:312
+#: ../includes/class-wcqc-export.php:324
 msgid "Invoice generated."
 msgstr "Factuur is gegenereerd."
 
-#: ../includes/class-wcqc-export.php:314
+#: ../includes/class-wcqc-export.php:326
 msgid "Quote generated."
 msgstr "Offerte is gegenereerd."
 
-#: ../includes/class-wcqc-export.php:316
+#: ../includes/class-wcqc-export.php:328
 msgid "Order confirmation generated."
 msgstr "Orderbevestiging aangemaakt."
 
-#: ../includes/class-wcqc-export.php:319
+#: ../includes/class-wcqc-export.php:331
 msgid "Uhoh. Something went wrong."
 msgstr "Oh oh. Er is iets misgegaan. "
 
-#: ../includes/class-wcqc-export.php:334 ../includes/class-wcqc-export.php:344
+#: ../includes/class-wcqc-export.php:346 ../includes/class-wcqc-export.php:356
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Je hebt onvoldoende rechten om deze pagina te bekijken."
 
-#: ../includes/class-wcqc-export.php:339
+#: ../includes/class-wcqc-export.php:351
 msgid "Missing parameters."
 msgstr "Ontbrekende parameters."
 
-#: ../includes/class-wcqc-export.php:358
+#: ../includes/class-wcqc-export.php:370
 msgid "close this window."
 msgstr "sluit dit scherm."
 
@@ -65,8 +65,8 @@ msgid "Get support"
 msgstr "Vraag support"
 
 #: ../includes/class-wcqc-settings.php:84
-msgid "WooCommerce Q-invoice connect"
-msgstr ""
+msgid "WooCommerce q-invoice connect"
+msgstr "WooCommerce q-invoice connect"
 
 #: ../includes/class-wcqc-settings.php:125
 msgid "General settings"
@@ -105,19 +105,43 @@ msgstr "Document type"
 msgid "Set the document type here"
 msgstr "Kies het te genereren document type"
 
-#: ../includes/class-wcqc-settings.php:190
+#: ../includes/class-wcqc-settings.php:184
+msgid "Invoice"
+msgstr "Factuur"
+
+#: ../includes/class-wcqc-settings.php:185
+msgid "Quote"
+msgstr ""
+
+#: ../includes/class-wcqc-settings.php:186
+msgid "Order confirmation"
+msgstr "Orderbevestiging "
+
+#: ../includes/class-wcqc-settings.php:187
+msgid "Recurring (monthly)"
+msgstr "Periodiek (maandelijks) "
+
+#: ../includes/class-wcqc-settings.php:188
+msgid "Recurring (quarterly)"
+msgstr "Periodiek (kwartaal) "
+
+#: ../includes/class-wcqc-settings.php:189
+msgid "Recurring (yearly)"
+msgstr "Periodiek (jaarlijks) "
+
+#: ../includes/class-wcqc-settings.php:197
 msgid "Layout code"
 msgstr "Layout code"
 
-#: ../includes/class-wcqc-settings.php:198
+#: ../includes/class-wcqc-settings.php:205
 msgid "Your q-invoice layout code"
 msgstr "Uw q-invoice layout code"
 
-#: ../includes/class-wcqc-settings.php:204
+#: ../includes/class-wcqc-settings.php:211
 msgid "Document remark"
 msgstr "Document opmerking"
 
-#: ../includes/class-wcqc-settings.php:212
+#: ../includes/class-wcqc-settings.php:219
 msgid ""
 "eg. Your order: {order_id}. Your payment method: {method}. (you can also use "
 "{order_number} and {order_date}). Use {customer_note} for the customer note"
@@ -126,140 +150,140 @@ msgstr ""
 "{order_number en {order_date} gebruiken). Gebruik {customer_note} voor de "
 "klant opmerking"
 
-#: ../includes/class-wcqc-settings.php:218
+#: ../includes/class-wcqc-settings.php:225
 msgid "Paid remark"
 msgstr "Betaald opmerking"
 
-#: ../includes/class-wcqc-settings.php:226
+#: ../includes/class-wcqc-settings.php:233
 msgid "eg. Your payment has been received. Via {method}"
 msgstr "eg. Uw betaling is ontvangen. Middels {method}"
 
-#: ../includes/class-wcqc-settings.php:232
+#: ../includes/class-wcqc-settings.php:239
 msgid "Document tag"
 msgstr "Document label"
 
-#: ../includes/class-wcqc-settings.php:240
+#: ../includes/class-wcqc-settings.php:247
 msgid ""
 "eg. Your webshop name (also accepted: {order_number}, {method} and "
 "{order_date}"
 msgstr ""
 "bv. Uw webshop name. Ook mogelijk: {order_number}, {method} en {order_date}"
 
-#: ../includes/class-wcqc-settings.php:246
+#: ../includes/class-wcqc-settings.php:253
 msgid "Send request on:"
 msgstr "Stuur verzoek als:"
 
-#: ../includes/class-wcqc-settings.php:254
+#: ../includes/class-wcqc-settings.php:261
 msgid "Every new order"
 msgstr "Een nieuwe bestelling geplaatst is"
 
-#: ../includes/class-wcqc-settings.php:255
+#: ../includes/class-wcqc-settings.php:262
 msgid "After each succesfull payment"
 msgstr "De betaling succesvol is afgerond"
 
-#: ../includes/class-wcqc-settings.php:256
+#: ../includes/class-wcqc-settings.php:263
 msgid "When order is marked completed"
 msgstr "Als de order gemarkeerd is als afgerond"
 
-#: ../includes/class-wcqc-settings.php:257
+#: ../includes/class-wcqc-settings.php:264
 msgid "Disable automatic invoicing"
 msgstr "Nooit automatisch verzoeken versturen"
 
-#: ../includes/class-wcqc-settings.php:259
+#: ../includes/class-wcqc-settings.php:266
 msgid "When to send invoice/quote request to q-invoice?"
 msgstr ""
 "Op welk moment zal het factuur/offerte verzoek naar q-invoice verzonden "
 "worden?"
 
-#: ../includes/class-wcqc-settings.php:265
+#: ../includes/class-wcqc-settings.php:272
 msgid "After request:"
 msgstr "Nadat verzoek verzonden is:"
 
-#: ../includes/class-wcqc-settings.php:273
+#: ../includes/class-wcqc-settings.php:280
 msgid "Save document as draft"
 msgstr "Document opslaan als concept"
 
-#: ../includes/class-wcqc-settings.php:274
+#: ../includes/class-wcqc-settings.php:281
 msgid "Finalize and save PDF"
 msgstr "Opslaan als PDF"
 
-#: ../includes/class-wcqc-settings.php:275
+#: ../includes/class-wcqc-settings.php:282
 msgid "Finalize and send email with PDF attached to customer"
 msgstr "Opslaan als PDF en verzenden naar de ontvanger als bijlage"
 
-#: ../includes/class-wcqc-settings.php:277
+#: ../includes/class-wcqc-settings.php:284
 msgid "What to do after request has been sent?"
 msgstr "Hoe dient q-invoice het verzoek te verwerken?"
 
-#: ../includes/class-wcqc-settings.php:283
+#: ../includes/class-wcqc-settings.php:290
 msgid "Save relation:"
 msgstr "Relatie opslaan:"
 
-#: ../includes/class-wcqc-settings.php:291
+#: ../includes/class-wcqc-settings.php:298
 msgid "No"
 msgstr "Nee"
 
-#: ../includes/class-wcqc-settings.php:292
+#: ../includes/class-wcqc-settings.php:299
 msgid "Yes"
 msgstr "Ja"
 
-#: ../includes/class-wcqc-settings.php:294
+#: ../includes/class-wcqc-settings.php:301
 msgid "Automatically save or update relation details?"
 msgstr "Relatie gegevens opslaan of bijwerken?"
 
-#: ../includes/class-wcqc-settings.php:301
+#: ../includes/class-wcqc-settings.php:308
 msgid "Coupon vat"
 msgstr "BTW over coupon"
 
-#: ../includes/class-wcqc-settings.php:309
+#: ../includes/class-wcqc-settings.php:316
 msgid "eg. 21 (without %)"
 msgstr "bv. 21 (zonder %)"
 
-#: ../includes/class-wcqc-settings.php:315
+#: ../includes/class-wcqc-settings.php:322
 msgid "Default ledger account"
 msgstr "Standaard grootboekrekening"
 
-#: ../includes/class-wcqc-settings.php:323
+#: ../includes/class-wcqc-settings.php:330
 msgid "The default ledger account for your revenue. eg. 8000"
 msgstr "De standaard rekening voor uw omzet. Bv. 8000"
 
-#: ../includes/class-wcqc-settings.php:331
+#: ../includes/class-wcqc-settings.php:338
 msgid "Calculation method:"
 msgstr "Rekenmethode"
 
-#: ../includes/class-wcqc-settings.php:339
+#: ../includes/class-wcqc-settings.php:346
 msgid "Prices <strong>including VAT</strong> are leading"
 msgstr "Bedragen <strong>inclusief</strong> BTW zijn leidend"
 
-#: ../includes/class-wcqc-settings.php:340
+#: ../includes/class-wcqc-settings.php:347
 msgid "Prices <strong>excluding VAT</strong> are leading"
 msgstr "Bedragen <strong>exclusief</strong> BTW zijn leidend"
 
-#: ../includes/class-wcqc-settings.php:342
+#: ../includes/class-wcqc-settings.php:349
 msgid "Set the preferred calculation method"
 msgstr "Stel hier uw voorkeurs rekenmethode in"
 
-#: ../includes/class-wcqc-settings.php:348
+#: ../includes/class-wcqc-settings.php:355
 msgid "Invoice date:"
 msgstr "Factuur datum:"
 
-#: ../includes/class-wcqc-settings.php:356
+#: ../includes/class-wcqc-settings.php:363
 msgid "Use order date for invoice date"
 msgstr "Gebruik datum van de order"
 
-#: ../includes/class-wcqc-settings.php:357
+#: ../includes/class-wcqc-settings.php:364
 msgid "Use date of sending request"
 msgstr "Gebruik datum van verzenden"
 
-#: ../includes/class-wcqc-settings.php:359
+#: ../includes/class-wcqc-settings.php:366
 msgid "Which date should be used as invoice date?"
 msgstr "Welke datum dient gebruikt te worden als factuurdatum?"
 
-#: ../includes/class-wcqc-settings.php:374
+#: ../includes/class-wcqc-settings.php:381
 msgid "Exclude payment methods:"
 msgstr "Betaalmethodes uitsluiten:"
 
-#: ../includes/class-wcqc-settings.php:382
+#: ../includes/class-wcqc-settings.php:389
 msgid ""
 "Exclude certain payment methods. For selected methods no request will be "
 "sent."
@@ -268,8 +292,8 @@ msgstr ""
 "verzoek verzonden."
 
 #: ../includes/class-wcqc-writepanels.php:71
-msgid "Send to Q-invoice.com"
-msgstr "Stuur naar Q-invoice.com"
+msgid "Send to q-invoice.com"
+msgstr "Stuur naar q-invoice.com"
 
 #: ../includes/class-wcqc-writepanels.php:81
 msgid "New invoice"
