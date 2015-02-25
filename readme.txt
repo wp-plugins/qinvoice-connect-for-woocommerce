@@ -4,7 +4,7 @@ Donate link: n/a
 Tags: billing, invoicing, woocommerce, packing, packingslip
 Requires at least: 3.0.1
 Tested up to: 4.1
-Stable tag: 2.0.11
+Stable tag: 2.0.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,9 @@ Dutch: http://help.q-invoice.nl/woocommerce-facturatie-plugin-instellen/
 
 
 == Changelog ==
+
+= 2.0.12 =
+* Changed 'Apply before tax' rule (deprecated in WC 2.3)
 
 = 2.0.11 =
 * Added support for incl/excl vat at coupon discounts

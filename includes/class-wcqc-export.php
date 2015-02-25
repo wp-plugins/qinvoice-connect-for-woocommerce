@@ -276,14 +276,14 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
 				$coupon = new WC_Coupon($code);
 				
 				//echo $this->general_settings['coupon_vat'];
-                 if($coupon->apply_before_tax == 'yes'){
+                 if($coupon->apply_before_tax == 'no'){
+                 	$vatp = 0;
+                 }else{
                  	$vatp = get_option( WooCommerce_Qinvoice_Connect::$plugin_prefix . 'coupon_vat' );
                  	if($vatp == ''){
                  		// fallback
                  		$vatp = $this->general_settings['coupon_vat'];
                  	}
-                 }else{
-                 	$vatp = 0;
                  }
                  $discount = true;
                  $description .= $code .' ';
