@@ -289,15 +289,11 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
                  $description .= $code .' ';
 			}
 
-			if($this->general_settings['calculation_method'] == 'incl'){
-				$price_incl = $this->order->get_total_discount();
-				$price = (($this->order->get_total_discount()/(100 + $vatp))*100);
-				$price_vat = $price_incl - $price;
-			}else{
-				$price = $this->order->get_total_discount();
-				$price_incl = round($this->order->get_total_discount()*(100 + $vatp),2)/100;
-				$price_vat = $price_incl - $price;
-			}
+			// calculate price for discount
+			$price = $this->order->get_total_discount();
+			$price_incl = round($this->order->get_total_discount()*(100 + $vatp),2)/100;
+			$price_vat = $price_incl - $price;
+			
 
 
 			if($discount == true){
@@ -314,10 +310,7 @@ if ( ! class_exists( 'WooCommerce_Qinvoice_Connect_Export' ) ) {
                  		);
                 $document->addItem($params);
 			}
-			// echo '<pre>';
-			// print_r($params);
-			// echo '</pre>';
-			// die();
+			
 			return $result = $document->sendRequest();
 			
 			unset($this->order);

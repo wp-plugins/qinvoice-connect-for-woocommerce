@@ -4,7 +4,7 @@ Donate link: n/a
 Tags: billing, invoicing, woocommerce, packing, packingslip
 Requires at least: 3.0.1
 Tested up to: 4.1
-Stable tag: 2.0.12
+Stable tag: 2.0.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,17 +36,28 @@ Yes, definitely.
 
 Sure we do. Contact us at info@q-invoice.com or by phone: +31 70 220 62 33
 
-More information about the setup can be found here: 
+Nederland
+info@q-invoice
++31 70 220 6233
+http://help.q-invoice.nl/woocommerce-facturatie-plugin-instellen/
 
-Dutch: http://help.q-invoice.nl/woocommerce-facturatie-plugin-instellen/
+Deutschland
+info@q-invoice.de
++49 (0) 341 60 47 32 61
 
-- more languages will follow and this document will be updated accordingly -
+Slovensko
+info@q-invoice.sk
+0911 258 330
+
 
 == Screenshots ==
 
 
 
 == Changelog ==
+
+= 2.0.13 =
+* Updated tax calculation for discounts (related to deprecation of tax rule)
 
 = 2.0.12 =
 * Changed 'Apply before tax' rule (deprecated in WC 2.3)
