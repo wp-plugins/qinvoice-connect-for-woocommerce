@@ -162,7 +162,7 @@ if ( !class_exists( 'qinvoice' ) ) {
 	                            <calculation_method><![CDATA['. $this->calculation_method .']]></calculation_method>
 								<tags>';
 			foreach($this->tags as $tag){
-				$string .= '<tag><![CDATA['. $tag .']]</tag>';
+				$string .= '<tag><![CDATA['. $tag .']]></tag>';
 			}
 						
 			$string .= '</tags>
